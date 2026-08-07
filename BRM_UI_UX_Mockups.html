@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BRM Risk Management Solution — UI/UX Mockups</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#101B2D; --navy2:#16233A; --navy3:#1E2E4A;
+    --accent:#2B6CB0; --accent-light:#EAF1FA;
+    --bg:#F3F5F8; --card:#FFFFFF; --border:#E3E6EC;
+    --text:#1A2233; --text2:#5B6478; --text3:#8A93A6;
+    --red:#C0392B; --red-bg:#FCEBE9; --red-text:#8E2A1F;
+    --amber:#B7791F; --amber-bg:#FCF3DE; --amber-text:#7A5209;
+    --green:#2F8452; --green-bg:#E6F4EB; --green-text:#1E5C38;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;}
+  .app{display:flex;min-height:900px;border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+  /* Sidebar */
+  .sidebar{width:236px;background:var(--navy);color:#C8D2E3;display:flex;flex-direction:column;flex-shrink:0;}
+  .sidebar .logo{display:flex;align-items:center;gap:10px;padding:20px 18px;border-bottom:1px solid rgba(255,255,255,.08);}
+  .sidebar .logo .mark{width:30px;height:30px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;}
+  .sidebar .logo .name{font-weight:600;color:#fff;font-size:14px;line-height:1.2;}
+  .sidebar .logo .sub{font-size:11px;color:#8494B0;}
+  .navgroup{padding:14px 10px;}
+  .navgroup .label{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:#5E6E8C;padding:8px 10px 4px;}
+  .navitem{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;font-size:13px;color:#B7C2D6;margin-bottom:1px;}
+  .navitem i{width:16px;text-align:center;font-size:13px;color:#8494B0;}
+  .navitem:hover{background:rgba(255,255,255,.06);color:#fff;}
+  .navitem.active{background:var(--navy3);color:#fff;}
+  .navitem.active i{color:var(--accent-light);}
+  .sidebar-foot{margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px;}
+  .sidebar-foot:hover{background:rgba(255,255,255,.05);}
+  .sidebar-foot .switchicon{margin-left:auto;color:#7887A3;font-size:12px;}
+  .navgroup.hidden-group{display:none;}
+  .persona-row{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:9px;cursor:pointer;border:1px solid transparent;}
+  .persona-row:hover{background:var(--bg);}
+  .persona-row.current{background:var(--accent-light);border-color:var(--accent);}
+  .persona-row .pav{width:32px;height:32px;border-radius:50%;background:var(--navy3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;}
+  .persona-row .pinfo{flex:1;min-width:0;}
+  .persona-row .pname{font-size:13px;font-weight:600;color:var(--text);}
+  .persona-row .pnote{font-size:11.5px;color:var(--text3);margin-top:1px;}
+  .persona-row .ptag{font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:20px;}
+  .readonly-badge{display:none;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--amber-text);background:var(--amber-bg);padding:5px 10px;border-radius:20px;margin-right:6px;}
+  body.read-only .readonly-badge{display:inline-flex;}
+  .avatar{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;}
+  .sidebar-foot .who{font-size:12px;color:#B7C2D6;line-height:1.3;}
+  .sidebar-foot .who .role{font-size:10.5px;color:#7887A3;}
+  /* Main */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--bg);}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:var(--card);border-bottom:1px solid var(--border);}
+  .topbar .title{font-size:16px;font-weight:600;}
+  .topbar .crumb{font-size:12px;color:var(--text3);}
+  .topbar .actions{display:flex;align-items:center;gap:14px;}
+  .searchbox{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:12.5px;color:var(--text3);width:220px;}
+  .iconbtn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:13px;position:relative;}
+  .dot{position:absolute;top:5px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--red);}
+  .content{flex:1;padding:22px;overflow:auto;}
+  .screen{display:none;}
+  .screen.active{display:block;}
+  h2.h{font-size:18px;font-weight:600;margin:0 0 3px;}
+  p.sub{font-size:12.5px;color:var(--text2);margin:0 0 18px;}
+  /* Cards / grids */
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
+  .kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;}
+  .kpi .lbl{font-size:11.5px;color:var(--text3);margin-bottom:6px;}
+  .kpi .val{font-size:22px;font-weight:600;}
+  .kpi .delta{font-size:11.5px;margin-top:4px;}
+  .up{color:var(--red-text);} .down{color:var(--green-text);} .flat{color:var(--text3);}
+  .panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-bottom:16px;}
+  .panel .phead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .panel .phead h3{font-size:13.5px;font-weight:600;margin:0;}
+  .panel .phead .more{font-size:12px;color:var(--accent);cursor:pointer;}
+  .grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;}
+  /* Badges */
+  .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;}
+  .b-red{background:var(--red-bg);color:var(--red-text);}
+  .b-amber{background:var(--amber-bg);color:var(--amber-text);}
+  .b-green{background:var(--green-bg);color:var(--green-text);}
+  .b-gray{background:#EEF0F4;color:var(--text2);}
+  .b-accent{background:var(--accent-light);color:#1B4F8C;}
+  .dotstat{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  /* Heatmap */
+  .heatmap{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+  .hcell{border-radius:6px;padding:10px 8px;font-size:11px;color:#fff;min-height:52px;display:flex;flex-direction:column;justify-content:space-between;}
+  .hcell .n{font-size:16px;font-weight:700;}
+  /* Table */
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:var(--text3);padding:8px 10px;border-bottom:1px solid var(--border);font-weight:600;}
+  td{padding:10px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  tr.rowhover:hover{background:#FAFBFD;cursor:pointer;}
+  .rag{width:10px;height:10px;border-radius:3px;display:inline-block;}
+  .filterbar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+  .chip{border:1px solid var(--border);background:var(--card);border-radius:8px;padding:7px 12px;font-size:12px;color:var(--text2);display:flex;align-items:center;gap:6px;}
+  .chip i{font-size:10px;}
+  .btn{border:1px solid var(--border);background:var(--card);border-radius:8px;padding:8px 14px;font-size:12.5px;font-weight:500;color:var(--text);cursor:pointer;}
+  .btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .btn-ghost{border-color:transparent;color:var(--accent);}
+  /* Tabs */
+  .tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:18px;}
+  .tab{padding:9px 4px;margin-right:22px;font-size:13px;color:var(--text3);border-bottom:2px solid transparent;cursor:pointer;}
+  .tab.active{color:var(--text);border-color:var(--accent);font-weight:600;}
+  .tabpane{display:none;}
+  .tabpane.active{display:block;}
+  /* Form */
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:12px;color:var(--text2);margin-bottom:5px;font-weight:500;}
+  .field input,.field select,.field textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 11px;font-size:13px;font-family:inherit;background:#fff;color:var(--text);}
+  .field textarea{resize:vertical;min-height:64px;}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .steps{display:flex;align-items:center;gap:0;margin-bottom:22px;}
+  .step{display:flex;align-items:center;gap:8px;color:var(--text3);font-size:12.5px;}
+  .step .n{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;}
+  .step.done .n{background:var(--green);border-color:var(--green);color:#fff;}
+  .step.current .n{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .step.current{color:var(--text);font-weight:600;}
+  .step-sep{flex:1;height:1px;background:var(--border);margin:0 10px;}
+  /* Sliders (rating) */
+  .ratingrow{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+  .ratingrow .rl{width:110px;font-size:12.5px;color:var(--text2);}
+  .ratingscale{display:flex;gap:4px;flex:1;}
+  .rseg{flex:1;height:8px;border-radius:4px;background:#EEF0F4;}
+  .rseg.fill1{background:var(--green);} .rseg.fill2{background:var(--amber);} .rseg.fill3{background:var(--red);}
+  .ratingrow .rv{width:64px;text-align:right;font-size:12px;font-weight:600;}
+  /* Process tree */
+  .tree{font-size:13px;}
+  .tnode{padding:7px 10px;border-radius:7px;margin-bottom:2px;display:flex;align-items:center;justify-content:space-between;}
+  .tnode:hover{background:#F5F7FA;cursor:pointer;}
+  .tnode.sel{background:var(--accent-light);}
+  .tnode .l{display:flex;align-items:center;gap:8px;}
+  .indent1{margin-left:18px;} .indent2{margin-left:36px;}
+  /* Alert list */
+  .alertrow{display:flex;gap:12px;padding:12px;border:1px solid var(--border);border-radius:9px;margin-bottom:8px;background:#fff;}
+  .alertrow.sel{border-color:var(--accent);background:var(--accent-light);}
+  .alertrow .aicon{width:32px;height:32px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;}
+  /* Kanban */
+  .kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .kcol{background:#EEF1F5;border-radius:10px;padding:10px;}
+  .kcol h4{font-size:12px;margin:2px 6px 10px;display:flex;justify-content:space-between;color:var(--text2);}
+  .kcard{background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:8px;font-size:12px;}
+  .kcard .t{font-weight:500;margin-bottom:6px;}
+  .kcard .m{display:flex;justify-content:space-between;align-items:center;color:var(--text3);font-size:11px;}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
+  /* Modal */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(16,27,45,.5);align-items:center;justify-content:center;z-index:50;padding:24px;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--card);border-radius:14px;width:640px;max-width:100%;max-height:88vh;overflow:auto;box-shadow:0 12px 36px rgba(0,0,0,.18);}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--card);}
+  .modal-head h3{margin:0;font-size:15px;font-weight:600;}
+  .modal-head .x{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text3);cursor:pointer;border:1px solid transparent;}
+  .modal-head .x:hover{background:var(--bg);color:var(--text);}
+  .modal-body{padding:20px 22px;}
+  .modal-foot{display:flex;justify-content:flex-end;gap:10px;padding:16px 22px;border-top:1px solid var(--border);position:sticky;bottom:0;background:var(--card);}
+  .toast{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:11px 18px;border-radius:9px;font-size:12.5px;font-weight:500;z-index:60;align-items:center;gap:8px;}
+  .toast.show{display:flex;}
+  .toast i{color:#7BC495;}
+  /* Generic interactive affordance */
+  [data-toast],[data-goto],.clickable,.hcell,.kcard,.chip,.iconbtn,.searchbox,.avatar,.sidebar-foot{cursor:pointer;}
+  [data-toast]:hover,[data-goto]:hover{opacity:.85;}
+  .hcell:hover{outline:2px solid rgba(255,255,255,.6);outline-offset:-2px;}
+  .kcard:hover{border-color:var(--border-strong,#C7CCD6);box-shadow:0 1px 4px rgba(0,0,0,.06);}
+  .chip.chip-on{background:var(--accent-light);border-color:var(--accent);color:#1B4F8C;font-weight:600;}
+  .iconbtn:hover,.avatar:hover{background:var(--bg);}
+  .steps .step{cursor:pointer;}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Clickable prototype of the BRM Risk Management Solution: sidebar navigation switches between nine screens covering executive reporting, risk register, risk assessment, KRI monitoring, NBRM intake, process risk, combined assurance, AI alert triage, and action tracking.</h2>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="mark">BR</div>
+      <div><div class="name">BRM Platform</div><div class="sub">Vodacom Business Risk</div></div>
+    </div>
+    <div class="navgroup">
+      <div class="label">Intelligence</div>
+      <div class="navitem active" data-screen="cockpit"><i class="fa-solid fa-gauge-high"></i>Executive cockpit</div>
+    </div>
+    <div class="navgroup">
+      <div class="label">Enterprise risk</div>
+      <div class="navitem" data-screen="register"><i class="fa-solid fa-list-ul"></i>Risk register</div>
+      <div class="navitem" data-screen="detail"><i class="fa-solid fa-circle-info"></i>Risk assessment</div>
+      <div class="navitem" data-screen="kri"><i class="fa-solid fa-chart-line"></i>KRI monitoring</div>
+      <div class="navitem" data-screen="actions"><i class="fa-solid fa-square-check"></i>Action tracker</div>
+    </div>
+    <div class="navgroup">
+      <div class="label">Specialist modules</div>
+      <div class="navitem" data-screen="nbrm"><i class="fa-solid fa-rocket"></i>NBRM intake</div>
+      <div class="navitem" data-screen="process"><i class="fa-solid fa-diagram-project"></i>Process risk</div>
+      <div class="navitem" data-screen="assurance"><i class="fa-solid fa-shield-halved"></i>Combined assurance</div>
+      <div class="navitem" data-screen="ai"><i class="fa-solid fa-satellite-dish"></i>AI sensory alerts</div>
+    </div>
+    <div class="navgroup">
+      <div class="label">Administration</div>
+      <div class="navitem" data-screen="kpiconfig"><i class="fa-solid fa-sliders"></i>KPI / KRI configuration</div>
+    </div>
+    <div class="sidebar-foot" id="personaTrigger" role="button">
+      <div class="avatar" id="personaAvatar">TM</div>
+      <div class="who"><span id="personaName">BRM Risk Specialist</span><div class="role" id="personaNote">Review &amp; oversight</div></div>
+      <i class="fa-solid fa-repeat switchicon" aria-hidden="true"></i>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="title" id="topTitle">Executive cockpit</div>
+        <div class="crumb" id="topCrumb">BRM Platform / Executive cockpit</div>
+      </div>
+      <div class="actions">
+        <span class="readonly-badge"><i class="fa-solid fa-eye"></i> Read-only access</span>
+        <div class="searchbox" data-toast="Search is illustrative in this prototype"><i class="fa-solid fa-magnifying-glass"></i>Search risks, controls, KRIs…</div>
+        <div class="iconbtn" data-toast="3 unread notifications"><i class="fa-regular fa-bell"></i><span class="dot"></span></div>
+        <div class="iconbtn" data-toast="Help center would open here"><i class="fa-solid fa-circle-question"></i></div>
+        <div class="avatar" data-toast="Profile menu — Thandiwe M.">TM</div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- 1. EXECUTIVE COCKPIT -->
+      <section class="screen active" id="screen-cockpit">
+        <h2 class="h">Executive cockpit</h2>
+        <p class="sub">Material movements, breaches, exposure and watchlist priorities — refreshed 07 Aug 2026, 08:00</p>
+
+        <div class="kpi-row">
+          <div class="kpi"><div class="lbl">Principal risks — red</div><div class="val">4</div><div class="delta up"><i class="fa-solid fa-arrow-up"></i> 1 vs last month</div></div>
+          <div class="kpi"><div class="lbl">Active appetite breaches</div><div class="val">7</div><div class="delta up"><i class="fa-solid fa-arrow-up"></i> 2 new this week</div></div>
+          <div class="kpi"><div class="lbl">Overdue critical actions</div><div class="val">12</div><div class="delta down"><i class="fa-solid fa-arrow-down"></i> 3 vs last month</div></div>
+          <div class="kpi"><div class="lbl">Assurance coverage</div><div class="val">78%</div><div class="delta flat">4 gaps identified</div></div>
+        </div>
+
+        <div class="grid2">
+          <div class="panel">
+            <div class="phead"><h3>Principal risk heatmap</h3><span class="more" data-goto="register">Open line of sight →</span></div>
+            <div class="heatmap">
+              <div class="hcell" style="background:#C0392B" data-goto="register" data-toast="Filtering register by Network Resilience"><span>Network Resilience</span><span class="n">16</span></div>
+              <div class="hcell" style="background:#C0392B" data-goto="register" data-toast="Filtering register by Regulatory (POPIA)"><span>Regulatory (POPIA)</span><span class="n">15</span></div>
+              <div class="hcell" style="background:#B7791F" data-goto="register" data-toast="Filtering register by Third-Party Concentration"><span>Third-Party Concentration</span><span class="n">12</span></div>
+              <div class="hcell" style="background:#B7791F" data-goto="register" data-toast="Filtering register by Cyber &amp; Data Security"><span>Cyber &amp; Data Security</span><span class="n">11</span></div>
+              <div class="hcell" style="background:#2F8452" data-goto="register" data-toast="Filtering register by Customer Experience"><span>Customer Experience</span><span class="n">6</span></div>
+              <div class="hcell" style="background:#B7791F" data-goto="register" data-toast="Filtering register by Financial Crime"><span>Financial Crime</span><span class="n">10</span></div>
+              <div class="hcell" style="background:#2F8452" data-goto="register" data-toast="Filtering register by People &amp; Culture"><span>People &amp; Culture</span><span class="n">5</span></div>
+              <div class="hcell" style="background:#2F8452" data-goto="register" data-toast="Filtering register by Market &amp; FX"><span>Market &amp; FX</span><span class="n">7</span></div>
+              <div class="hcell" style="background:#C0392B" data-goto="register" data-toast="Filtering register by Technology Change"><span>Technology Change</span><span class="n">14</span></div>
+              <div class="hcell" style="background:#2F8452" data-goto="register" data-toast="Filtering register by Supply Chain"><span>Supply Chain</span><span class="n">6</span></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="phead"><h3>Emerging risk watchlist</h3><span class="more" data-toast="Opening full emerging risk watchlist">View all →</span></div>
+            <div style="font-size:12.5px;">
+              <div class="clickable" data-toast="Emerging risk: Spectrum policy change — ICASA" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span>Spectrum policy change — ICASA</span><span class="badge b-amber">Medium</span></div>
+              <div class="clickable" data-toast="Emerging risk: Cloud vendor concentration" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span>Cloud vendor concentration</span><span class="badge b-red">High</span></div>
+              <div class="clickable" data-toast="Emerging risk: Load-shedding recurrence" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span>Load-shedding recurrence</span><span class="badge b-amber">Medium</span></div>
+              <div class="clickable" data-toast="Emerging risk: Fraud ring — SIM swap pattern" style="display:flex;justify-content:space-between;padding:8px 0;"><span>Fraud ring — SIM swap pattern</span><span class="badge b-red">High</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="panel">
+            <div class="phead"><h3>Management prompts</h3></div>
+            <div style="font-size:12.5px;color:var(--text2);line-height:1.7;">
+              <p class="clickable" data-goto="detail" style="margin:0 0 8px;"><i class="fa-solid fa-circle-exclamation" style="color:var(--red-text);margin-right:6px;"></i><b style="font-weight:600;color:var(--text);">Network Resilience</b> residual rating moved amber→red after 3 consecutive KRI breaches. Treatment plan review requested.</p>
+              <p class="clickable" data-goto="nbrm" style="margin:0 0 8px;"><i class="fa-solid fa-circle-exclamation" style="color:var(--amber-text);margin-right:6px;"></i><b style="font-weight:600;color:var(--text);">NBRM pipeline</b> — 2 initiatives at Gate 3 exceed 10-day SLA awaiting SME sign-off.</p>
+              <p class="clickable" data-goto="assurance" style="margin:0;"><i class="fa-solid fa-circle-exclamation" style="color:var(--amber-text);margin-right:6px;"></i><b style="font-weight:600;color:var(--text);">Combined assurance</b> gap identified: Cyber & Data Security has no line-3 coverage this quarter.</p>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="phead"><h3>Committee packs</h3></div>
+            <div style="font-size:12.5px;">
+              <div class="clickable" data-toast="Opening RMC — August cycle pack" style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);"><span>RMC — August cycle</span><span class="badge b-green">Approved</span></div>
+              <div class="clickable" data-toast="Opening ARC/ARCC — Q3 pack" style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);"><span>ARC/ARCC — Q3 pack</span><span class="badge b-amber">In review</span></div>
+              <div class="clickable" data-toast="Opening Exco — weekly flash" style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;"><span>Exco — weekly flash</span><span class="badge b-gray">Draft</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. RISK REGISTER -->
+      <section class="screen" id="screen-register">
+        <h2 class="h">Risk register</h2>
+        <p class="sub">Operational, tactical and principal risks across all business units</p>
+
+        <div class="filterbar">
+          <div class="chip filter-chip"><i class="fa-solid fa-filter"></i>Business unit: All</div>
+          <div class="chip filter-chip"><i class="fa-solid fa-filter"></i>Category: All</div>
+          <div class="chip filter-chip"><i class="fa-solid fa-filter"></i>Rating: All</div>
+          <div class="chip filter-chip chip-on"><i class="fa-solid fa-filter"></i>Status: Active</div>
+          <div style="flex:1;"></div>
+          <button class="btn bulk-import" data-toast="Bulk import — CSV template downloaded"><i class="fa-solid fa-upload"></i> Bulk import</button>
+          <button class="btn btn-primary" id="btnNewRisk"><i class="fa-solid fa-plus"></i> New risk</button>
+        </div>
+
+        <div class="panel" style="padding:0;">
+          <table>
+            <tr><th>Risk ID</th><th>Title</th><th>Category</th><th>Owner</th><th>Inherent</th><th>Residual</th><th>Target</th><th>Status</th><th>Review date</th></tr>
+            <tr class="rowhover risk-row" data-id="ORK-0142" data-title="Third-party concentration — network equipment" data-cat="Operational" data-owner="S. van Wyk" data-rag="amber" data-status="Active" data-statusclass="b-green"><td>ORK-0142</td><td>Third-party concentration — network equipment</td><td>Operational</td><td>S. van Wyk</td><td><span class="rag" style="background:var(--red)"></span></td><td><span class="rag" style="background:var(--amber)"></span></td><td><span class="rag" style="background:var(--green)"></span></td><td><span class="badge b-green">Active</span></td><td>14 Aug 2026</td></tr>
+            <tr class="rowhover risk-row" data-id="TRK-0031" data-title="Regulatory non-compliance — POPIA data handling" data-cat="Compliance" data-owner="N. Dlamini" data-rag="red" data-status="Breach" data-statusclass="b-red"><td>TRK-0031</td><td>Regulatory non-compliance — POPIA data handling</td><td>Compliance</td><td>N. Dlamini</td><td><span class="rag" style="background:var(--red)"></span></td><td><span class="rag" style="background:var(--red)"></span></td><td><span class="rag" style="background:var(--amber)"></span></td><td><span class="badge b-red">Breach</span></td><td>09 Aug 2026</td></tr>
+            <tr class="rowhover risk-row" data-id="ORK-0098" data-title="Network resilience — load-shedding exposure" data-cat="Operational" data-owner="K. Naidoo" data-rag="red" data-status="Breach" data-statusclass="b-red"><td>ORK-0098</td><td>Network resilience — load-shedding exposure</td><td>Operational</td><td>K. Naidoo</td><td><span class="rag" style="background:var(--red)"></span></td><td><span class="rag" style="background:var(--red)"></span></td><td><span class="rag" style="background:var(--amber)"></span></td><td><span class="badge b-red">Breach</span></td><td>10 Aug 2026</td></tr>
+            <tr class="rowhover risk-row" data-id="PRK-0007" data-title="Cyber &amp; data security — cloud vendor" data-cat="Technology" data-owner="T. Mokoena" data-rag="amber" data-status="Active" data-statusclass="b-green"><td>PRK-0007</td><td>Cyber &amp; data security — cloud vendor</td><td>Technology</td><td>T. Mokoena</td><td><span class="rag" style="background:var(--red)"></span></td><td><span class="rag" style="background:var(--amber)"></span></td><td><span class="rag" style="background:var(--green)"></span></td><td><span class="badge b-green">Active</span></td><td>21 Aug 2026</td></tr>
+            <tr class="rowhover risk-row" data-id="ORK-0156" data-title="Financial crime — SIM swap fraud pattern" data-cat="Operational" data-owner="L. Botha" data-rag="amber" data-status="Under review" data-statusclass="b-amber"><td>ORK-0156</td><td>Financial crime — SIM swap fraud pattern</td><td>Operational</td><td>L. Botha</td><td><span class="rag" style="background:var(--amber)"></span></td><td><span class="rag" style="background:var(--amber)"></span></td><td><span class="rag" style="background:var(--green)"></span></td><td><span class="badge b-amber">Under review</span></td><td>18 Aug 2026</td></tr>
+            <tr class="rowhover risk-row" data-id="ORK-0203" data-title="Customer experience — billing platform incidents" data-cat="Operational" data-owner="R. Pillay" data-rag="green" data-status="Active" data-statusclass="b-green"><td>ORK-0203</td><td>Customer experience — billing platform incidents</td><td>Operational</td><td>R. Pillay</td><td><span class="rag" style="background:var(--amber)"></span></td><td><span class="rag" style="background:var(--green)"></span></td><td><span class="rag" style="background:var(--green)"></span></td><td><span class="badge b-green">Active</span></td><td>02 Sep 2026</td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- 3. RISK DETAIL / ASSESSMENT -->
+      <section class="screen" id="screen-detail">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:2px;">
+          <h2 class="h" style="margin:0;" id="detailTitle">ORK-0098 — Network resilience: load-shedding exposure</h2>
+          <span class="badge b-red" id="detailBadge">Residual: Red</span>
+        </div>
+        <p class="sub" id="detailSub">Operational risk · Network Operations BU · Owner: K. Naidoo · Last updated 05 Aug 2026</p>
+        <p class="sub" id="detailPreviewNote" style="display:none;color:var(--text3);"><i class="fa-solid fa-circle-info"></i> This prototype shows full assessment detail for ORK-0098 only — other rows reuse this layout with header details updated.</p>
+
+        <div class="tabs">
+          <div class="tab active" data-tab="overview">Overview</div>
+          <div class="tab" data-tab="assessment">Assessment</div>
+          <div class="tab" data-tab="controls">Controls (4)</div>
+          <div class="tab" data-tab="kris">KRIs (3)</div>
+          <div class="tab" data-tab="actions">Actions (2)</div>
+          <div class="tab" data-tab="history">History</div>
+        </div>
+
+        <!-- Overview -->
+        <div class="tabpane active" id="tab-overview">
+          <div class="grid2">
+            <div>
+              <div class="panel">
+                <div class="phead"><h3>Rating</h3></div>
+                <div class="ratingrow"><span class="rl">Inherent</span><div class="ratingscale"><div class="rseg fill3"></div><div class="rseg fill3"></div><div class="rseg fill3"></div><div class="rseg"></div><div class="rseg"></div></div><span class="rv">Red · 16</span></div>
+                <div class="ratingrow"><span class="rl">Residual</span><div class="ratingscale"><div class="rseg fill3"></div><div class="rseg fill3"></div><div class="rseg"></div><div class="rseg"></div><div class="rseg"></div></div><span class="rv">Red · 12</span></div>
+                <div class="ratingrow"><span class="rl">Target</span><div class="ratingscale"><div class="rseg fill2"></div><div class="rseg fill2"></div><div class="rseg"></div><div class="rseg"></div><div class="rseg"></div></div><span class="rv">Amber · 8</span></div>
+              </div>
+              <div class="panel">
+                <div class="phead"><h3>Drivers &amp; consequences</h3></div>
+                <p style="font-size:12.5px;color:var(--text2);line-height:1.6;margin:0;">Sustained Stage 4+ load-shedding exceeds backup power autonomy at 340 base stations, increasing outage probability during peak periods. Consequence: service degradation, SLA penalties, customer churn in affected regions.</p>
+              </div>
+            </div>
+            <div>
+              <div class="panel">
+                <div class="phead"><h3>Linked controls</h3></div>
+                <div style="font-size:12.5px;">
+                  <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);"><span>Diesel generator autonomy testing</span><span class="badge b-green">Effective</span></div>
+                  <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);"><span>Battery backup capacity review</span><span class="badge b-amber">Partial</span></div>
+                  <div style="display:flex;justify-content:space-between;padding:7px 0;"><span>Site prioritisation protocol</span><span class="badge b-green">Effective</span></div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="phead"><h3>Linked KRIs</h3></div>
+                <div style="font-size:12.5px;">
+                  <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);"><span>Sites below 4hr autonomy</span><span class="badge b-red">Breached</span></div>
+                  <div style="display:flex;justify-content:space-between;padding:7px 0;"><span>Outage minutes / site / month</span><span class="badge b-amber">Watch</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assessment -->
+        <div class="tabpane" id="tab-assessment">
+          <div class="grid2">
+            <div class="panel">
+              <div class="phead"><h3>Scoring methodology</h3></div>
+              <div class="field-row">
+                <div class="field"><label>Inherent likelihood</label><select><option>1 — Rare</option><option>2 — Unlikely</option><option>3 — Possible</option><option selected>4 — Likely</option><option>5 — Almost certain</option></select></div>
+                <div class="field"><label>Inherent impact</label><select><option>1 — Insignificant</option><option>2 — Minor</option><option>3 — Moderate</option><option selected>4 — Major</option><option>5 — Severe</option></select></div>
+              </div>
+              <div class="field-row">
+                <div class="field"><label>Residual likelihood</label><select><option>1 — Rare</option><option>2 — Unlikely</option><option>3 — Possible</option><option selected>4 — Likely</option><option>5 — Almost certain</option></select></div>
+                <div class="field"><label>Residual impact</label><select><option>1 — Insignificant</option><option>2 — Minor</option><option selected>3 — Moderate</option><option>4 — Major</option><option>5 — Severe</option></select></div>
+              </div>
+              <div class="field"><label>Speed of impact</label><select><option>Slow — &gt;6 months</option><option selected>Medium — 1–6 months</option><option>Fast — &lt;1 month</option></select></div>
+              <div class="field"><label>Rationale for current rating</label><textarea>Residual likelihood held at "Likely" following 3 consecutive KRI breaches on power autonomy; impact reduced from Severe to Moderate reflecting partial mitigation via site prioritisation protocol.</textarea></div>
+              <button class="btn btn-primary save-btn" data-toast="Assessment saved — rating history updated"><i class="fa-solid fa-check"></i> Save assessment</button>
+            </div>
+            <div class="panel">
+              <div class="phead"><h3>Rating history</h3></div>
+              <div style="font-size:12.5px;">
+                <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);"><span>05 Aug 2026</span><span class="badge b-red">Red · 12</span></div>
+                <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);"><span>02 Jul 2026</span><span class="badge b-amber">Amber · 9</span></div>
+                <div style="display:flex;justify-content:space-between;padding:7px 0;"><span>04 Jun 2026</span><span class="badge b-amber">Amber · 8</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="tabpane" id="tab-controls">
+          <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+            <button class="btn btn-primary" id="btnNewControl"><i class="fa-solid fa-plus"></i> Add control</button>
+          </div>
+          <div class="panel" style="padding:0;">
+            <table id="controlTable">
+              <tr><th>Control</th><th>Type</th><th>Frequency</th><th>Owner</th><th>Design</th><th>Operating</th><th>Evidence</th><th></th></tr>
+
+              <tr class="rowhover control-row" data-name="Diesel generator autonomy testing" data-objective="Ensure backup diesel generators can sustain priority sites through extended outages." data-type="Preventative" data-mode="Manual" data-freq="Monthly" data-owner="K. Naidoo" data-linked="ORK-0098 — Network resilience" data-design="Effective" data-operating="Effective" data-evidence="3 files">
+                <td>Diesel generator autonomy testing</td><td>Preventative · Manual</td><td>Monthly</td><td>K. Naidoo</td><td><span class="badge b-green">Effective</span></td><td><span class="badge b-green">Effective</span></td><td><i class="fa-solid fa-paperclip"></i> 3 files</td>
+                <td><button class="btn btn-ghost control-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
+              </tr>
+              <tr class="rowhover control-row" data-name="Battery backup capacity review" data-objective="Confirm battery backup capacity meets minimum autonomy standard at priority sites." data-type="Detective" data-mode="Manual" data-freq="Quarterly" data-owner="K. Naidoo" data-linked="ORK-0098 — Network resilience" data-design="Partial" data-operating="Partial" data-evidence="1 file">
+                <td>Battery backup capacity review</td><td>Detective · Manual</td><td>Quarterly</td><td>K. Naidoo</td><td><span class="badge b-amber">Partial</span></td><td><span class="badge b-amber">Partial</span></td><td><i class="fa-solid fa-paperclip"></i> 1 file</td>
+                <td><button class="btn btn-ghost control-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
+              </tr>
+              <tr class="rowhover control-row" data-name="Site prioritisation protocol" data-objective="Automatically prioritise power and maintenance resources to highest-criticality sites first." data-type="Preventative" data-mode="Automated" data-freq="Continuous" data-owner="Network Ops" data-linked="ORK-0098 — Network resilience" data-design="Effective" data-operating="Effective" data-evidence="2 files">
+                <td>Site prioritisation protocol</td><td>Preventative · Automated</td><td>Continuous</td><td>Network Ops</td><td><span class="badge b-green">Effective</span></td><td><span class="badge b-green">Effective</span></td><td><i class="fa-solid fa-paperclip"></i> 2 files</td>
+                <td><button class="btn btn-ghost control-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
+              </tr>
+              <tr class="rowhover control-row" data-name="Independent backup power SLA test" data-objective="Independently verify backup power SLA compliance is being met at audited sites." data-type="Detective" data-mode="Manual" data-freq="Annual" data-owner="Internal Audit" data-linked="ORK-0098 — Network resilience" data-design="Not tested" data-operating="Not tested" data-evidence="">
+                <td>Independent backup power SLA test</td><td>Detective · Manual</td><td>Annual</td><td>Internal Audit</td><td><span class="badge b-red">Not tested</span></td><td><span class="badge b-red">Not tested</span></td><td>—</td>
+                <td><button class="btn btn-ghost control-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- KRIs -->
+        <div class="tabpane" id="tab-kris">
+          <div class="panel" style="padding:0;">
+            <table>
+              <tr><th>KRI</th><th>Current value</th><th>Threshold</th><th>Trend</th><th>RAG</th><th>Commentary</th></tr>
+              <tr class="rowhover" data-toast="Opening KRI: Sites below 4hr power autonomy"><td>Sites below 4hr power autonomy</td><td>62 sites</td><td>&lt; 20</td><td><i class="fa-solid fa-arrow-trend-up" style="color:var(--red-text)"></i></td><td><span class="rag" style="background:var(--red)"></span></td><td>3rd consecutive breach — escalated</td></tr>
+              <tr class="rowhover" data-toast="Opening KRI: Outage minutes / site / month"><td>Outage minutes / site / month</td><td>41 min</td><td>&lt; 30</td><td><i class="fa-solid fa-arrow-trend-up" style="color:var(--amber-text)"></i></td><td><span class="rag" style="background:var(--amber)"></span></td><td>Correlated with Stage 4+ schedules</td></tr>
+              <tr class="rowhover" data-toast="Opening KRI: Generator fuel SLA compliance"><td>Generator fuel SLA compliance</td><td>94%</td><td>&gt; 95%</td><td><i class="fa-solid fa-arrow-trend-down" style="color:var(--green-text)"></i></td><td><span class="rag" style="background:var(--green)"></span></td><td>Within tolerance</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="tabpane" id="tab-actions">
+          <div class="panel" style="padding:0;">
+            <table>
+              <tr><th>Action</th><th>Owner</th><th>Due date</th><th>Status</th><th>Progress</th></tr>
+              <tr class="rowhover" data-toast="Opening action: Increase diesel autonomy — priority sites"><td>Increase diesel autonomy — priority sites</td><td>K. Naidoo</td><td>20 Aug 2026</td><td><span class="badge b-amber">Due soon</span></td><td>60%</td></tr>
+              <tr class="rowhover" data-toast="Opening action: Battery backup capacity review"><td>Battery backup capacity review</td><td>K. Naidoo</td><td>02 Aug 2026</td><td><span class="badge b-red">5 days overdue</span></td><td>30%</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- History -->
+        <div class="tabpane" id="tab-history">
+          <div class="panel">
+            <div class="phead"><h3>Audit trail</h3></div>
+            <div style="font-size:12.5px;">
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span><b style="font-weight:600;">K. Naidoo</b> updated residual rating to Red · 12</span><span style="color:var(--text3);">05 Aug 2026, 09:14</span></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span><b style="font-weight:600;">AI sensory monitoring</b> raised trend deterioration alert</span><span style="color:var(--text3);">04 Aug 2026, 06:02</span></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span><b style="font-weight:600;">System</b> escalated KRI breach — sites below 4hr autonomy</span><span style="color:var(--text3);">29 Jul 2026, 07:00</span></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;"><span><b style="font-weight:600;">T. Mokoena</b> approved control effectiveness rating for "Site prioritisation protocol"</span><span style="color:var(--text3);">02 Jul 2026, 14:22</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. KRI DASHBOARD -->
+      <section class="screen" id="screen-kri">
+        <h2 class="h">KRI monitoring</h2>
+        <p class="sub">Threshold status and trend across all monitored indicators</p>
+
+        <div class="kpi-row">
+          <div class="kpi"><div class="lbl">Total KRIs</div><div class="val">86</div></div>
+          <div class="kpi"><div class="lbl">Red status</div><div class="val" style="color:var(--red-text)">9</div></div>
+          <div class="kpi"><div class="lbl">Amber status</div><div class="val" style="color:var(--amber-text)">17</div></div>
+          <div class="kpi"><div class="lbl">Deteriorating trend</div><div class="val">6</div></div>
+        </div>
+
+        <div class="panel" style="padding:0;">
+          <table>
+            <tr><th>KRI</th><th>Linked risk</th><th>Current value</th><th>Threshold</th><th>Trend</th><th>RAG</th><th>Owner</th></tr>
+            <tr class="rowhover kri-row" data-riskid="ORK-0098"><td>Sites below 4hr power autonomy</td><td>ORK-0098</td><td>62 sites</td><td>&lt; 20</td><td><i class="fa-solid fa-arrow-trend-up" style="color:var(--red-text)"></i></td><td><span class="rag" style="background:var(--red)"></span></td><td>K. Naidoo</td></tr>
+            <tr class="rowhover kri-row" data-riskid="TRK-0031"><td>Data subject access requests overdue</td><td>TRK-0031</td><td>14</td><td>&lt; 5</td><td><i class="fa-solid fa-arrow-trend-up" style="color:var(--red-text)"></i></td><td><span class="rag" style="background:var(--red)"></span></td><td>N. Dlamini</td></tr>
+            <tr class="rowhover kri-row" data-riskid="PRK-0007"><td>P1 cloud incidents / month</td><td>PRK-0007</td><td>3</td><td>&lt; 2</td><td><i class="fa-solid fa-arrow-trend-up" style="color:var(--amber-text)"></i></td><td><span class="rag" style="background:var(--amber)"></span></td><td>T. Mokoena</td></tr>
+            <tr class="rowhover kri-row" data-riskid="ORK-0156"><td>SIM swap fraud attempts / week</td><td>ORK-0156</td><td>41</td><td>&lt; 50</td><td><i class="fa-solid fa-arrow-trend-down" style="color:var(--green-text)"></i></td><td><span class="rag" style="background:var(--amber)"></span></td><td>L. Botha</td></tr>
+            <tr class="rowhover kri-row" data-riskid="ORK-0203"><td>Billing incident MTTR (hrs)</td><td>ORK-0203</td><td>3.1</td><td>&lt; 4</td><td><i class="fa-solid fa-arrow-trend-down" style="color:var(--green-text)"></i></td><td><span class="rag" style="background:var(--green)"></span></td><td>R. Pillay</td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- 5. NBRM INTAKE -->
+      <section class="screen" id="screen-nbrm">
+        <h2 class="h">NBRM intake — new initiative assessment</h2>
+        <p class="sub" id="nbrmSub">Gate 2 of 4: risk identification and control mapping</p>
+
+        <div class="steps" id="nbrmSteps">
+          <div class="step done" data-step="1"><div class="n"><i class="fa-solid fa-check"></i></div>Intake</div>
+          <div class="step-sep"></div>
+          <div class="step current" data-step="2"><div class="n">2</div>Risk &amp; control</div>
+          <div class="step-sep"></div>
+          <div class="step" data-step="3"><div class="n">3</div>Decision</div>
+          <div class="step-sep"></div>
+          <div class="step" data-step="4"><div class="n">4</div>Handover</div>
+        </div>
+
+        <div class="grid2">
+          <div class="panel">
+            <div class="phead"><h3>Initiative details</h3></div>
+            <div class="field"><label>Initiative name</label><input value="eSIM self-service activation via app"></div>
+            <div class="field-row">
+              <div class="field"><label>Business owner</label><input value="M. Adams — Consumer Digital"></div>
+              <div class="field"><label>Business unit</label><select><option>Consumer Digital</option></select></div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label>Product / service type</label><select><option>New feature — existing product</option></select></div>
+              <div class="field"><label>Target launch date</label><input value="30 Sep 2026"></div>
+            </div>
+            <div class="field"><label>Description</label><textarea>Enables customers to activate an eSIM profile via the MyVodacom app without in-store visit, using automated identity verification.</textarea></div>
+            <div class="field"><label>Impacted functions</label><input value="Network, Fraud & Risk, Legal, Customer Experience"></div>
+          </div>
+          <div class="panel">
+            <div class="phead"><h3>Risk priority classification</h3></div>
+            <div class="field"><label>Customers impacted</label><select><option>Large — &gt;500k customers</option></select></div>
+            <div class="field"><label>New technology or solution?</label><select><option>Yes — new identity verification vendor</option></select></div>
+            <div class="field"><label>New partner involved?</label><select><option>Yes — third-party KYC provider</option></select></div>
+            <div class="field"><label>Preliminary priority</label><input value="High — SME review required" style="font-weight:600;color:var(--red-text);border-color:var(--red);"></div>
+            <div class="field"><label>Required reviewers</label><input value="Fraud & Risk, Legal & Regulatory, Cyber Security"></div>
+            <div style="display:flex;gap:10px;margin-top:18px;">
+              <button class="btn save-btn" data-toast="Draft saved">Save draft</button>
+              <button class="btn btn-primary" id="nbrmSubmit">Submit for SME review →</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. PROCESS RISK -->
+      <section class="screen" id="screen-process">
+        <h2 class="h">Process risk management</h2>
+        <p class="sub">Process inventory with linked risks, controls and criticality</p>
+
+        <div class="grid2">
+          <div class="panel">
+            <div class="phead"><h3>Process inventory</h3></div>
+            <div class="tree" id="processTree">
+              <div class="tnode" data-toast="Customer onboarding — 2 process steps below"><span class="l"><i class="fa-solid fa-folder"></i> Customer onboarding</span><span class="badge b-amber">Critical</span></div>
+              <div class="tnode indent1 sel" data-node="rica"><span class="l"><i class="fa-solid fa-file"></i> RICA / identity verification</span><span class="badge b-red">High risk</span></div>
+              <div class="tnode indent1" data-node="sim"><span class="l"><i class="fa-solid fa-file"></i> SIM activation</span><span class="badge b-amber">Medium risk</span></div>
+              <div class="tnode" data-toast="Billing &amp; collections — 2 process steps below"><span class="l"><i class="fa-solid fa-folder"></i> Billing &amp; collections</span><span class="badge b-green">Standard</span></div>
+              <div class="tnode indent1" data-node="invoice"><span class="l"><i class="fa-solid fa-file"></i> Invoice generation</span><span class="badge b-green">Low risk</span></div>
+              <div class="tnode indent1" data-node="debt"><span class="l"><i class="fa-solid fa-file"></i> Debt collection handover</span><span class="badge b-amber">Medium risk</span></div>
+              <div class="tnode" data-toast="Network incident management — 1 process step below"><span class="l"><i class="fa-solid fa-folder"></i> Network incident management</span><span class="badge b-red">Critical</span></div>
+              <div class="tnode indent1" data-node="p1"><span class="l"><i class="fa-solid fa-file"></i> P1 outage response</span><span class="badge b-red">High risk</span></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="phead"><h3 id="processTitle">RICA / identity verification</h3></div>
+            <p style="font-size:12px;color:var(--text3);margin:0 0 12px;" id="processMeta">Process owner: N. Dlamini · Criticality: Regulatory + Customer</p>
+            <div style="font-size:12.5px;margin-bottom:14px;">
+              <div style="font-weight:600;margin-bottom:6px;">Mapped risks</div>
+              <div id="processRisks">
+                <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);"><span>Regulatory non-compliance — POPIA</span><span class="badge b-red">Red</span></div>
+                <div style="display:flex;justify-content:space-between;padding:6px 0;"><span>Identity fraud at onboarding</span><span class="badge b-amber">Amber</span></div>
+              </div>
+            </div>
+            <div style="font-size:12.5px;">
+              <div style="font-weight:600;margin-bottom:6px;">Mapped controls</div>
+              <div id="processControls">
+                <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);"><span>Automated document verification</span><span class="badge b-green">Effective</span></div>
+                <div style="display:flex;justify-content:space-between;padding:6px 0;"><span>Manual QA sampling — 5%</span><span class="badge b-amber">Partial</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. COMBINED ASSURANCE -->
+      <section class="screen" id="screen-assurance">
+        <h2 class="h">Combined assurance coverage</h2>
+        <p class="sub">Coverage by principal risk across lines of assurance — Q3 2026</p>
+
+        <div class="panel" style="padding:0;">
+          <table>
+            <tr><th>Principal risk</th><th>Line 1 — Management</th><th>Line 2 — Risk/Compliance</th><th>Line 3 — Internal Audit</th><th>External Audit</th><th>Coverage</th></tr>
+            <tr class="rowhover" data-toast="Opening coverage detail: Network resilience"><td>Network resilience</td><td><span class="rag" style="background:var(--green)"></span></td><td><span class="rag" style="background:var(--green)"></span></td><td><span class="rag" style="background:var(--amber)"></span></td><td><span class="rag" style="background:#D9DCE3"></span></td><td>Partial</td></tr>
+            <tr class="rowhover" data-toast="Opening coverage detail: Regulatory (POPIA)"><td>Regulatory (POPIA)</td><td><span class="rag" style="background:var(--green)"></span></td><td><span class="rag" style="background:var(--green)"></span></td><td><span class="rag" style="background:var(--green)"></span></td><td><span class="rag" style="background:var(--green)"></span></td><td>Full</td></tr>
+            <tr class="rowhover" data-toast="Opening coverage detail: Cyber &amp; data security"><td>Cyber &amp; data security</td><td><span class="rag" style="background:var(--green)"></span></td><td><span class="rag" style="background:var(--amber)"></span></td><td><span class="rag" style="background:#D9DCE3"></span></td><td><span class="rag" style="background:#D9DCE3"></span></td><td style="color:var(--red-text);font-weight:600;">Gap</td></tr>
+            <tr class="rowhover" data-toast="Opening coverage detail: Financial crime"><td>Financial crime</td><td><span class="rag" style="background:var(--green)"></span></td><td><span class="rag" style="background:var(--green)"></span></td><td><span class="rag" style="background:var(--amber)"></span></td><td><span class="rag" style="background:var(--green)"></span></td><td>Full</td></tr>
+          </table>
+        </div>
+
+        <div class="panel">
+          <div class="phead"><h3>Open findings</h3><span class="more" data-goto="actions">View remediation tracker →</span></div>
+          <div style="font-size:12.5px;">
+            <div class="clickable" data-toast="Opening finding: Backup power SLA not independently tested" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span>Backup power SLA not independently tested — Internal Audit</span><span class="badge b-red">High · overdue</span></div>
+            <div class="clickable" data-toast="Opening finding: Cloud vendor SOC 2 report 90 days stale" style="display:flex;justify-content:space-between;padding:8px 0;"><span>Cloud vendor SOC 2 report 90 days stale</span><span class="badge b-amber">Medium · due 20 Aug</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. AI SENSORY ALERTS -->
+      <section class="screen" id="screen-ai">
+        <h2 class="h">AI sensory alert triage</h2>
+        <p class="sub">Signals detected from approved sources, awaiting human validation</p>
+
+        <div class="grid2">
+          <div id="alertList">
+            <div class="alertrow sel" data-alert="trend">
+              <div class="aicon" style="background:var(--red-bg);color:var(--red-text);"><i class="fa-solid fa-bolt"></i></div>
+              <div style="flex:1;">
+                <div style="display:flex;justify-content:space-between;"><b style="font-weight:600;font-size:12.5px;">Trend deterioration — power autonomy KRI</b><span class="badge b-red">High</span></div>
+                <div style="font-size:11.5px;color:var(--text3);margin-top:3px;">Internal source · 3 consecutive readings below threshold · Confidence 92%</div>
+              </div>
+            </div>
+            <div class="alertrow" data-alert="regulatory">
+              <div class="aicon" style="background:var(--amber-bg);color:var(--amber-text);"><i class="fa-solid fa-newspaper"></i></div>
+              <div style="flex:1;">
+                <div style="display:flex;justify-content:space-between;"><b style="font-weight:600;font-size:12.5px;">Regulatory signal — ICASA spectrum consultation</b><span class="badge b-amber">Medium</span></div>
+                <div style="font-size:11.5px;color:var(--text3);margin-top:3px;">External source · Regulatory Watch feed · Confidence 78%</div>
+              </div>
+            </div>
+            <div class="alertrow" data-alert="supplier">
+              <div class="aicon" style="background:var(--amber-bg);color:var(--amber-text);"><i class="fa-solid fa-truck-fast"></i></div>
+              <div style="flex:1;">
+                <div style="display:flex;justify-content:space-between;"><b style="font-weight:600;font-size:12.5px;">Supplier signal — network equipment vendor downgrade</b><span class="badge b-amber">Medium</span></div>
+                <div style="font-size:11.5px;color:var(--text3);margin-top:3px;">External source · Credit rating feed · Confidence 85%</div>
+              </div>
+            </div>
+            <div class="alertrow" data-alert="control">
+              <div class="aicon" style="background:#EEF0F4;color:var(--text3);"><i class="fa-solid fa-shield"></i></div>
+              <div style="flex:1;">
+                <div style="display:flex;justify-content:space-between;"><b style="font-weight:600;font-size:12.5px;">Control failure — battery backup test</b><span class="badge b-gray">Low</span></div>
+                <div style="font-size:11.5px;color:var(--text3);margin-top:3px;">Internal source · Control testing log · Confidence 88%</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="phead"><h3 id="alertDetailTitle">Alert detail — trend deterioration</h3></div>
+            <p style="font-size:12.5px;color:var(--text2);line-height:1.6;" id="alertDetailSummary">AI summary: "Sites below 4hr power autonomy" has breached its red threshold for 3 consecutive weekly readings (62, 58, 51 sites), an accelerating trend correlated with Stage 4+ load-shedding schedules in Gauteng and KZN.</p>
+            <div style="font-size:12px;margin:12px 0;">
+              <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);"><span>Linked risk</span><span id="alertDetailRisk">ORK-0098</span></div>
+              <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);"><span>Trigger rule</span><span id="alertDetailTrigger">3-period threshold breach</span></div>
+              <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);"><span>Confidence</span><span id="alertDetailConfidence">92%</span></div>
+              <div style="display:flex;justify-content:space-between;padding:5px 0;"><span>Suggested action</span><span id="alertDetailAction">Escalate rating review</span></div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn" id="alertReject" style="flex:1;color:var(--red-text);"><i class="fa-solid fa-xmark"></i> Reject</button>
+              <button class="btn btn-primary" id="alertValidate" style="flex:1;"><i class="fa-solid fa-check"></i> Validate &amp; escalate</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. ACTION TRACKER -->
+      <section class="screen" id="screen-actions">
+        <h2 class="h">Action tracker</h2>
+        <p class="sub">Treatment plans and remediation actions across all modules</p>
+
+        <div class="kanban">
+          <div class="kcol"><h4>Open <span>6</span></h4>
+            <div class="kcard" data-toast="Increase diesel autonomy — K. Naidoo, due 20 Aug"><div class="t">Increase diesel autonomy — priority sites</div><div class="m"><span>K. Naidoo</span><span>Due 20 Aug</span></div></div>
+            <div class="kcard" data-toast="Complete DSAR backlog clearance — N. Dlamini, due 15 Aug"><div class="t">Complete DSAR backlog clearance</div><div class="m"><span>N. Dlamini</span><span>Due 15 Aug</span></div></div>
+          </div>
+          <div class="kcol"><h4>Due soon <span>4</span></h4>
+            <div class="kcard" data-toast="Cloud vendor SOC 2 refresh — T. Mokoena, due 12 Aug"><div class="t">Cloud vendor SOC 2 refresh</div><div class="m"><span>T. Mokoena</span><span>Due 12 Aug</span></div></div>
+            <div class="kcard" data-toast="SIM swap rule tuning — L. Botha, due 14 Aug"><div class="t">SIM swap rule tuning — fraud model</div><div class="m"><span>L. Botha</span><span>Due 14 Aug</span></div></div>
+          </div>
+          <div class="kcol"><h4 style="color:var(--red-text)">Overdue <span>3</span></h4>
+            <div class="kcard" data-toast="Battery backup capacity review — 5 days overdue" style="border-color:var(--red);"><div class="t">Battery backup capacity review</div><div class="m"><span>K. Naidoo</span><span style="color:var(--red-text);">5 days overdue</span></div></div>
+            <div class="kcard" data-toast="Independent test — backup power SLA — 9 days overdue" style="border-color:var(--red);"><div class="t">Independent test — backup power SLA</div><div class="m"><span>Internal Audit</span><span style="color:var(--red-text);">9 days overdue</span></div></div>
+          </div>
+          <div class="kcol"><h4>Closed (30d) <span>18</span></h4>
+            <div class="kcard" data-toast="Billing MTTR remediation — closed 02 Aug"><div class="t">Billing MTTR remediation</div><div class="m"><span>R. Pillay</span><span>Closed 02 Aug</span></div></div>
+            <div class="kcard" data-toast="Manual QA sampling uplift — closed 30 Jul"><div class="t">Manual QA sampling uplift</div><div class="m"><span>N. Dlamini</span><span>Closed 30 Jul</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. KPI / KRI CONFIGURATION -->
+      <section class="screen" id="screen-kpiconfig">
+        <h2 class="h">KPI / KRI configuration</h2>
+        <p class="sub">Master library of key performance and key risk indicators — definitions, thresholds and ownership. Configuring an indicator here makes it available to link against risks and processes; the KRI monitoring screen shows live values against these definitions.</p>
+
+        <div class="filterbar">
+          <div class="chip filter-chip"><i class="fa-solid fa-filter"></i>Type: All</div>
+          <div class="chip filter-chip"><i class="fa-solid fa-filter"></i>Category: All</div>
+          <div class="chip filter-chip chip-on"><i class="fa-solid fa-filter"></i>Status: Active</div>
+          <div style="flex:1;"></div>
+          <button class="btn bulk-import" data-toast="Bulk import — CSV template downloaded"><i class="fa-solid fa-upload"></i> Bulk import</button>
+          <button class="btn btn-primary" id="btnNewKpi"><i class="fa-solid fa-plus"></i> Add KPI / KRI</button>
+        </div>
+
+        <div class="panel" style="padding:0;">
+          <table id="kpiTable">
+            <tr><th>Indicator</th><th>Type</th><th>Linked to</th><th>Source</th><th>Thresholds (R / A / G)</th><th>Frequency</th><th>Owner</th><th>Status</th><th></th></tr>
+
+            <tr class="rowhover kpi-row" data-name="Sites below 4hr power autonomy" data-type="KRI" data-def="Number of network sites where backup power autonomy falls below 4 hours." data-linked="ORK-0098 — Network resilience" data-source="Network monitoring system" data-owner="K. Naidoo" data-freq="Weekly" data-red="&gt; 40 sites" data-amber="20–40 sites" data-green="&lt; 20 sites" data-unit="Sites" data-status="Active">
+              <td>Sites below 4hr power autonomy</td><td><span class="badge b-red">KRI</span></td><td>ORK-0098</td><td>Network monitoring system</td><td>&gt;40 / 20–40 / &lt;20</td><td>Weekly</td><td>K. Naidoo</td><td><span class="badge b-green">Active</span></td>
+              <td><button class="btn btn-ghost kpi-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
+            </tr>
+
+            <tr class="rowhover kpi-row" data-name="Data subject access requests overdue" data-type="KRI" data-def="Count of DSAR requests outstanding beyond the regulatory response window." data-linked="TRK-0031 — Regulatory (POPIA)" data-source="Case management system" data-owner="N. Dlamini" data-freq="Weekly" data-red="&gt; 10" data-amber="5–10" data-green="&lt; 5" data-unit="Count" data-status="Active">
+              <td>Data subject access requests overdue</td><td><span class="badge b-red">KRI</span></td><td>TRK-0031</td><td>Case management system</td><td>&gt;10 / 5–10 / &lt;5</td><td>Weekly</td><td>N. Dlamini</td><td><span class="badge b-green">Active</span></td>
+              <td><button class="btn btn-ghost kpi-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
+            </tr>
+
+            <tr class="rowhover kpi-row" data-name="Billing incident MTTR" data-type="KPI" data-def="Mean time to resolve P1/P2 billing platform incidents, from detection to resolution." data-linked="Process — Billing &amp; collections" data-source="Incident management system" data-owner="R. Pillay" data-freq="Monthly" data-red="&gt; 6 hrs" data-amber="4–6 hrs" data-green="&lt; 4 hrs" data-unit="Hours" data-status="Active">
+              <td>Billing incident MTTR</td><td><span class="badge b-accent">KPI</span></td><td>Billing &amp; collections</td><td>Incident management system</td><td>&gt;6 / 4–6 / &lt;4 hrs</td><td>Monthly</td><td>R. Pillay</td><td><span class="badge b-green">Active</span></td>
+              <td><button class="btn btn-ghost kpi-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
+            </tr>
+
+            <tr class="rowhover kpi-row" data-name="P1 outage response time" data-type="KPI" data-def="Time from P1 network incident detection to first response action initiated." data-linked="Process — P1 outage response" data-source="Network operations centre log" data-owner="Network Operations" data-freq="Monthly" data-red="&gt; 45 min" data-amber="30–45 min" data-green="&lt; 30 min" data-unit="Minutes" data-status="Active">
+              <td>P1 outage response time</td><td><span class="badge b-accent">KPI</span></td><td>P1 outage response</td><td>Network operations centre log</td><td>&gt;45 / 30–45 / &lt;30 min</td><td>Monthly</td><td>Network Operations</td><td><span class="badge b-green">Active</span></td>
+              <td><button class="btn btn-ghost kpi-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
+            </tr>
+
+            <tr class="rowhover kpi-row" data-name="SIM swap fraud attempts / week" data-type="KRI" data-def="Weekly count of flagged SIM swap attempts matching known fraud patterns." data-linked="ORK-0156 — Financial crime" data-source="Fraud detection platform" data-owner="L. Botha" data-freq="Weekly" data-red="&gt; 60" data-amber="50–60" data-green="&lt; 50" data-unit="Count" data-status="Active">
+              <td>SIM swap fraud attempts / week</td><td><span class="badge b-red">KRI</span></td><td>ORK-0156</td><td>Fraud detection platform</td><td>&gt;60 / 50–60 / &lt;50</td><td>Weekly</td><td>L. Botha</td><td><span class="badge b-green">Active</span></td>
+              <td><button class="btn btn-ghost kpi-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
+            </tr>
+
+            <tr class="rowhover kpi-row" data-name="Control testing completion rate" data-type="KPI" data-def="Percentage of scheduled control tests completed within the assurance plan period." data-linked="Combined assurance" data-source="Assurance planning module" data-owner="Assurance team" data-freq="Quarterly" data-red="&lt; 80%" data-amber="80–95%" data-green="&gt; 95%" data-unit="Percent" data-status="Draft">
+              <td>Control testing completion rate</td><td><span class="badge b-accent">KPI</span></td><td>Combined assurance</td><td>Assurance planning module</td><td>&lt;80 / 80–95 / &gt;95%</td><td>Quarterly</td><td>Assurance team</td><td><span class="badge b-gray">Draft</span></td>
+              <td><button class="btn btn-ghost kpi-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
+            </tr>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="newRiskOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>New risk</h3>
+      <div class="x" id="newRiskClose" role="button" aria-label="Close"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    <div class="modal-body">
+      <div class="field"><label>Risk title</label><input id="nrTitle" placeholder="e.g. Third-party concentration — payment gateway"></div>
+      <div class="field-row">
+        <div class="field"><label>Category</label>
+          <select id="nrCategory">
+            <option>Operational</option><option>Compliance</option><option>Technology</option>
+            <option>Financial</option><option>Strategic</option><option>Reputational</option>
+          </select>
+        </div>
+        <div class="field"><label>Business unit</label>
+          <select><option>Network Operations</option><option>Consumer Digital</option><option>Finance</option><option>Legal &amp; Regulatory</option><option>Technology</option></select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Risk owner</label><input placeholder="Search for owner…"></div>
+        <div class="field"><label>Next review date</label><input type="date"></div>
+      </div>
+      <div class="field"><label>Description</label><textarea placeholder="Describe the risk, its drivers and potential consequences…"></textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Inherent likelihood</label><select><option>1 — Rare</option><option>2 — Unlikely</option><option selected>3 — Possible</option><option>4 — Likely</option><option>5 — Almost certain</option></select></div>
+        <div class="field"><label>Inherent impact</label><select><option>1 — Insignificant</option><option>2 — Minor</option><option selected>3 — Moderate</option><option>4 — Major</option><option>5 — Severe</option></select></div>
+      </div>
+      <div class="field"><label>Linked principal risk</label><select><option>Network resilience</option><option>Regulatory (POPIA)</option><option>Cyber &amp; data security</option><option>Third-party concentration</option><option>Financial crime</option></select></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="newRiskCancel">Cancel</button>
+      <button class="btn btn-primary" id="newRiskSave"><i class="fa-solid fa-check"></i> Create risk</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="kpiOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="kpiModalTitle">Add KPI / KRI</h3>
+      <div class="x" id="kpiClose" role="button" aria-label="Close"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    <div class="modal-body">
+      <div class="field-row">
+        <div class="field"><label>Indicator name</label><input id="kpiName" placeholder="e.g. Cloud incident response time"></div>
+        <div class="field"><label>Type</label>
+          <select id="kpiType">
+            <option value="KRI">KRI — Key Risk Indicator</option>
+            <option value="KPI">KPI — Key Performance Indicator</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Definition</label><textarea id="kpiDef" placeholder="What this indicator measures, and why it matters…"></textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Linked risk or process</label><input id="kpiLinked" placeholder="e.g. ORK-0098 — Network resilience"></div>
+        <div class="field"><label>Data source</label><input id="kpiSource" placeholder="e.g. Network monitoring system"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Owner</label><input id="kpiOwner" placeholder="Search for owner…"></div>
+        <div class="field"><label>Frequency</label>
+          <select id="kpiFreq"><option>Real-time</option><option>Daily</option><option selected>Weekly</option><option>Monthly</option><option>Quarterly</option></select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Red threshold</label><input id="kpiRed" placeholder="e.g. &gt; 40 sites"></div>
+        <div class="field"><label>Amber threshold</label><input id="kpiAmber" placeholder="e.g. 20–40 sites"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Green threshold</label><input id="kpiGreen" placeholder="e.g. &lt; 20 sites"></div>
+        <div class="field"><label>Unit of measure</label><input id="kpiUnit" placeholder="e.g. Sites, Hours, Percent"></div>
+      </div>
+      <div class="field"><label>Status</label>
+        <select id="kpiStatus"><option>Draft</option><option selected>Active</option><option>Retired</option></select>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="kpiDelete" style="margin-right:auto;color:var(--red-text);display:none;"><i class="fa-solid fa-trash"></i> Delete</button>
+      <button class="btn" id="kpiCancel">Cancel</button>
+      <button class="btn btn-primary" id="kpiSave"><i class="fa-solid fa-check"></i> Save indicator</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="controlOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="controlModalTitle">Add control</h3>
+      <div class="x" id="controlClose" role="button" aria-label="Close"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    <div class="modal-body">
+      <div class="field"><label>Control title</label><input id="ctrlName" placeholder="e.g. Automated document verification"></div>
+      <div class="field"><label>Objective</label><textarea id="ctrlObjective" placeholder="What this control is designed to prevent or detect…"></textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Type</label>
+          <select id="ctrlType"><option>Preventative</option><option>Detective</option><option>Corrective</option></select>
+        </div>
+        <div class="field"><label>Manual / automated</label>
+          <select id="ctrlMode"><option>Manual</option><option>Automated</option></select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Frequency</label>
+          <select id="ctrlFreq"><option>Continuous</option><option>Daily</option><option>Weekly</option><option>Monthly</option><option>Quarterly</option><option>Annual</option></select>
+        </div>
+        <div class="field"><label>Owner</label><input id="ctrlOwner" placeholder="Search for owner…"></div>
+      </div>
+      <div class="field"><label>Linked risk / process</label><input id="ctrlLinked" placeholder="e.g. ORK-0098 — Network resilience"></div>
+      <div class="field-row">
+        <div class="field"><label>Design effectiveness</label>
+          <select id="ctrlDesign"><option>Effective</option><option>Partial</option><option>Not tested</option></select>
+        </div>
+        <div class="field"><label>Operating effectiveness</label>
+          <select id="ctrlOperating"><option>Effective</option><option>Partial</option><option>Not tested</option></select>
+        </div>
+      </div>
+      <div class="field"><label>Evidence</label><input id="ctrlEvidence" placeholder="e.g. 2 files, or leave blank"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="controlDelete" style="margin-right:auto;color:var(--red-text);display:none;"><i class="fa-solid fa-trash"></i> Delete</button>
+      <button class="btn" id="controlCancel">Cancel</button>
+      <button class="btn btn-primary" id="controlSave"><i class="fa-solid fa-check"></i> Save control</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="personaOverlay">
+  <div class="modal" style="width:480px;">
+    <div class="modal-head">
+      <h3>Switch persona</h3>
+      <div class="x" id="personaClose" role="button" aria-label="Close"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:12px;color:var(--text3);margin:0 0 14px;">The 13 roles defined in the requirements doc (Section 4). Switching updates the sidebar navigation to that role's typical access and toggles read-only mode where applicable.</p>
+      <div id="personaList"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg">Risk created</span></div>
+
+<script>
+  var titles = {
+    cockpit:['Executive cockpit','BRM Platform / Executive cockpit'],
+    register:['Risk register','BRM Platform / Enterprise risk / Risk register'],
+    detail:['Risk assessment','BRM Platform / Enterprise risk / Risk detail'],
+    kri:['KRI monitoring','BRM Platform / Enterprise risk / KRI monitoring'],
+    actions:['Action tracker','BRM Platform / Enterprise risk / Action tracker'],
+    nbrm:['NBRM intake','BRM Platform / Specialist modules / NBRM'],
+    process:['Process risk management','BRM Platform / Specialist modules / Process risk'],
+    assurance:['Combined assurance','BRM Platform / Specialist modules / Combined assurance'],
+    ai:['AI sensory alert triage','BRM Platform / Specialist modules / AI sensory monitoring'],
+    kpiconfig:['KPI / KRI configuration','BRM Platform / Administration / KPI & KRI configuration']
+  };
+
+  var toast = document.getElementById('toast');
+  var toastMsg = document.getElementById('toastMsg');
+  function showToast(msg){
+    toastMsg.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 2600);
+  }
+
+  function switchScreen(key){
+    var scr = document.getElementById('screen-' + key);
+    if(!scr) return;
+    document.querySelectorAll('.navitem').forEach(function(n){n.classList.remove('active');});
+    var navItem = document.querySelector('.navitem[data-screen="' + key + '"]');
+    if(navItem) navItem.classList.add('active');
+    document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+    scr.classList.add('active');
+    if(titles[key]){
+      document.getElementById('topTitle').textContent = titles[key][0];
+      document.getElementById('topCrumb').textContent = titles[key][1];
+    }
+    document.querySelector('.content').scrollTop = 0;
+  }
+
+  document.querySelectorAll('.navitem').forEach(function(item){
+    item.addEventListener('click', function(){ switchScreen(item.getAttribute('data-screen')); });
+  });
+
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.addEventListener('click', function(){
+      var group = t.parentElement;
+      group.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');});
+      t.classList.add('active');
+      var key = t.getAttribute('data-tab');
+      if(!key) return;
+      var container = group.parentElement;
+      container.querySelectorAll('.tabpane').forEach(function(p){p.classList.remove('active');});
+      var pane = document.getElementById('tab-' + key);
+      if(pane) pane.classList.add('active');
+    });
+  });
+
+  // Generic affordances: anything tagged data-toast and/or data-goto responds to a click
+  document.querySelectorAll('[data-toast], [data-goto]').forEach(function(el){
+    el.addEventListener('click', function(){
+      var msg = el.getAttribute('data-toast');
+      var goto = el.getAttribute('data-goto');
+      if(msg) showToast(msg);
+      if(goto) switchScreen(goto);
+    });
+  });
+
+  // Risk register <-> risk detail
+  var ragMeta = {
+    red:['Red','b-red'], amber:['Amber','b-amber'], green:['Green','b-green']
+  };
+  function openRiskDetail(d){
+    if(!d) return;
+    var m = ragMeta[d.rag] || ragMeta.amber;
+    document.getElementById('detailTitle').textContent = d.id + ' — ' + d.title;
+    var badge = document.getElementById('detailBadge');
+    badge.textContent = 'Residual: ' + m[0];
+    badge.className = 'badge ' + m[1];
+    document.getElementById('detailSub').textContent = d.cat + ' risk · Owner: ' + d.owner + ' · Status: ' + d.status;
+    document.getElementById('detailPreviewNote').style.display = (d.id === 'ORK-0098') ? 'none' : 'block';
+    switchScreen('detail');
+    showToast('Opened ' + d.id);
+  }
+
+  var riskDataMap = {};
+  document.querySelectorAll('.risk-row').forEach(function(row){
+    var id = row.getAttribute('data-id');
+    riskDataMap[id] = {
+      id: id,
+      title: row.getAttribute('data-title'),
+      cat: row.getAttribute('data-cat'),
+      owner: row.getAttribute('data-owner'),
+      rag: row.getAttribute('data-rag'),
+      status: row.getAttribute('data-status')
+    };
+    row.addEventListener('click', function(){ openRiskDetail(riskDataMap[id]); });
+  });
+
+  document.querySelectorAll('.kri-row').forEach(function(row){
+    row.addEventListener('click', function(){
+      var id = row.getAttribute('data-riskid');
+      var d = riskDataMap[id];
+      if(d) openRiskDetail(d);
+      else showToast('Opening linked risk ' + id);
+    });
+  });
+
+  // Filter chips (toggle on/off)
+  document.querySelectorAll('.filter-chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      chip.classList.toggle('chip-on');
+      var label = chip.textContent.trim();
+      showToast((chip.classList.contains('chip-on') ? 'Filter applied — ' : 'Filter cleared — ') + label);
+    });
+  });
+
+  // Process risk tree
+  var processData = {
+    rica: { title:'RICA / identity verification', meta:'Process owner: N. Dlamini · Criticality: Regulatory + Customer',
+      risks:[['Regulatory non-compliance — POPIA','b-red','Red'],['Identity fraud at onboarding','b-amber','Amber']],
+      controls:[['Automated document verification','b-green','Effective'],['Manual QA sampling — 5%','b-amber','Partial']] },
+    sim: { title:'SIM activation', meta:'Process owner: K. Naidoo · Criticality: Customer + Operational',
+      risks:[['Activation failure — network timeout','b-amber','Amber']],
+      controls:[['Automated retry logic','b-green','Effective'],['Manual escalation queue','b-amber','Partial']] },
+    invoice: { title:'Invoice generation', meta:'Process owner: Finance Operations · Criticality: Financial',
+      risks:[['Billing calculation error','b-green','Green']],
+      controls:[['Automated rating engine reconciliation','b-green','Effective']] },
+    debt: { title:'Debt collection handover', meta:'Process owner: Finance Operations · Criticality: Financial + Customer',
+      risks:[['Incorrect handover — active dispute','b-amber','Amber']],
+      controls:[['Dispute flag check before handover','b-amber','Partial']] },
+    p1: { title:'P1 outage response', meta:'Process owner: Network Operations · Criticality: Regulatory + Customer + Operational',
+      risks:[['Network resilience — load-shedding exposure','b-red','Red']],
+      controls:[['Site prioritisation protocol','b-green','Effective'],['Independent backup power SLA test','b-red','Not tested']] }
+  };
+  function renderRows(list){
+    return list.map(function(r, i){
+      var last = (i === list.length - 1);
+      return '<div style="display:flex;justify-content:space-between;padding:6px 0;' + (last ? '' : 'border-bottom:1px solid var(--border);') + '"><span>' + r[0] + '</span><span class="badge ' + r[1] + '">' + r[2] + '</span></div>';
+    }).join('');
+  }
+  document.querySelectorAll('#processTree .tnode[data-node]').forEach(function(node){
+    node.addEventListener('click', function(){
+      document.querySelectorAll('#processTree .tnode').forEach(function(n){n.classList.remove('sel');});
+      node.classList.add('sel');
+      var d = processData[node.getAttribute('data-node')];
+      if(!d) return;
+      document.getElementById('processTitle').textContent = d.title;
+      document.getElementById('processMeta').textContent = d.meta;
+      document.getElementById('processRisks').innerHTML = renderRows(d.risks);
+      document.getElementById('processControls').innerHTML = renderRows(d.controls);
+    });
+  });
+
+  // AI sensory alerts
+  var alertData = {
+    trend: { title:'Alert detail — trend deterioration', summary:'AI summary: "Sites below 4hr power autonomy" has breached its red threshold for 3 consecutive weekly readings (62, 58, 51 sites), an accelerating trend correlated with Stage 4+ load-shedding schedules in Gauteng and KZN.', risk:'ORK-0098', trigger:'3-period threshold breach', confidence:'92%', action:'Escalate rating review' },
+    regulatory: { title:'Alert detail — regulatory signal', summary:'AI summary: ICASA opened a public consultation on spectrum allocation changes that may affect network capacity planning in three provinces.', risk:'Emerging risk — Spectrum policy change', trigger:'Regulatory keyword match', confidence:'78%', action:'Route to Legal & Regulatory for review' },
+    supplier: { title:'Alert detail — supplier signal', summary:'AI summary: A credit rating agency downgraded a key network equipment supplier, raising concentration and continuity concerns.', risk:'ORK-0142', trigger:'Supplier credit rating change', confidence:'85%', action:'Trigger third-party risk review' },
+    control: { title:'Alert detail — control failure', summary:'AI summary: The scheduled battery backup capacity test did not complete successfully at 12 sites this cycle.', risk:'ORK-0098', trigger:'Control testing exception', confidence:'88%', action:'Notify control owner for retest' }
+  };
+  document.querySelectorAll('.alertrow[data-alert]').forEach(function(row){
+    row.addEventListener('click', function(){
+      document.querySelectorAll('.alertrow').forEach(function(r){r.classList.remove('sel'); r.style.opacity='';});
+      row.classList.add('sel');
+      var d = alertData[row.getAttribute('data-alert')];
+      if(!d) return;
+      document.getElementById('alertDetailTitle').textContent = d.title;
+      document.getElementById('alertDetailSummary').textContent = d.summary;
+      document.getElementById('alertDetailRisk').textContent = d.risk;
+      document.getElementById('alertDetailTrigger').textContent = d.trigger;
+      document.getElementById('alertDetailConfidence').textContent = d.confidence;
+      document.getElementById('alertDetailAction').textContent = d.action;
+    });
+  });
+  document.getElementById('alertReject').addEventListener('click', function(){
+    var sel = document.querySelector('.alertrow.sel');
+    if(sel) sel.style.opacity = '0.4';
+    showToast('Alert rejected — removed from active queue');
+  });
+  document.getElementById('alertValidate').addEventListener('click', function(){
+    showToast('Alert validated — escalated to risk owner');
+  });
+
+  // NBRM gate stepper
+  document.querySelectorAll('#nbrmSteps .step').forEach(function(step){
+    step.addEventListener('click', function(){
+      var n = step.getAttribute('data-step');
+      document.querySelectorAll('#nbrmSteps .step').forEach(function(s){
+        var sn = s.getAttribute('data-step');
+        s.classList.remove('done', 'current');
+        if(sn < n) s.classList.add('done');
+        else if(sn === n) s.classList.add('current');
+      });
+      var gateNames = {1:'intake and prioritisation', 2:'risk identification and control mapping', 3:'decision and approval', 4:'operational handover'};
+      document.getElementById('nbrmSub').textContent = 'Gate ' + n + ' of 4: ' + gateNames[n];
+    });
+  });
+  document.getElementById('nbrmSubmit').addEventListener('click', function(){
+    document.querySelector('#nbrmSteps .step[data-step="3"]').click();
+    showToast('Submitted for SME review — routed to Fraud & Risk, Legal & Regulatory, Cyber Security');
+  });
+
+  // New risk modal
+  var overlay = document.getElementById('newRiskOverlay');
+  var riskCounter = 204;
+
+  function openModal(){
+    overlay.classList.add('open');
+    document.getElementById('nrTitle').focus();
+  }
+  function closeModal(){
+    overlay.classList.remove('open');
+  }
+
+  document.getElementById('btnNewRisk').addEventListener('click', openModal);
+  document.getElementById('newRiskClose').addEventListener('click', closeModal);
+  document.getElementById('newRiskCancel').addEventListener('click', closeModal);
+  overlay.addEventListener('click', function(e){ if(e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && overlay.classList.contains('open')) closeModal(); });
+
+  document.getElementById('newRiskSave').addEventListener('click', function(){
+    var titleInput = document.getElementById('nrTitle');
+    var title = titleInput.value.trim();
+    if(!title){
+      titleInput.style.borderColor = 'var(--red)';
+      titleInput.focus();
+      return;
+    }
+    titleInput.style.borderColor = '';
+    var category = document.getElementById('nrCategory').value;
+    riskCounter++;
+    var id = 'ORK-0' + riskCounter;
+    var newData = { id:id, title:title, cat:category, owner:'Unassigned', rag:'amber', status:'Draft' };
+    riskDataMap[id] = newData;
+
+    var table = document.querySelector('#screen-register table');
+    var row = document.createElement('tr');
+    row.className = 'rowhover risk-row';
+    row.innerHTML =
+      '<td>' + id + '</td>' +
+      '<td>' + title + '</td>' +
+      '<td>' + category + '</td>' +
+      '<td>Unassigned</td>' +
+      '<td><span class="rag" style="background:var(--amber)"></span></td>' +
+      '<td><span class="rag" style="background:var(--amber)"></span></td>' +
+      '<td><span class="rag" style="background:var(--green)"></span></td>' +
+      '<td><span class="badge b-accent">Draft</span></td>' +
+      '<td>—</td>';
+    row.addEventListener('click', function(){ openRiskDetail(newData); });
+    table.appendChild(row);
+    row.scrollIntoView({block:'nearest'});
+
+    closeModal();
+    titleInput.value = '';
+    showToast(id + ' created — click the row to open it');
+  });
+
+  // KPI / KRI configuration
+  var kpiOverlay = document.getElementById('kpiOverlay');
+  var kpiFields = ['name','type','def','linked','source','owner','freq','red','amber','green','unit','status'];
+  var kpiEditingRow = null;
+
+  function kpiFieldEl(key){ return document.getElementById('kpi' + key.charAt(0).toUpperCase() + key.slice(1)); }
+
+  function openKpiModal(row){
+    kpiEditingRow = row || null;
+    document.getElementById('kpiModalTitle').textContent = row ? 'Edit KPI / KRI' : 'Add KPI / KRI';
+    document.getElementById('kpiDelete').style.display = row ? 'inline-flex' : 'none';
+    kpiFields.forEach(function(key){
+      var el = kpiFieldEl(key);
+      if(!el) return;
+      el.value = row ? (row.getAttribute('data-' + key) || '') : (key === 'freq' ? 'Weekly' : key === 'status' ? 'Active' : key === 'type' ? 'KRI' : '');
+    });
+    kpiOverlay.classList.add('open');
+    document.getElementById('kpiName').focus();
+  }
+  function closeKpiModal(){
+    kpiOverlay.classList.remove('open');
+    kpiEditingRow = null;
+  }
+
+  document.getElementById('btnNewKpi').addEventListener('click', function(){ openKpiModal(null); });
+  document.querySelectorAll('.kpi-edit').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      openKpiModal(btn.closest('.kpi-row'));
+    });
+  });
+  document.getElementById('kpiClose').addEventListener('click', closeKpiModal);
+  document.getElementById('kpiCancel').addEventListener('click', closeKpiModal);
+  kpiOverlay.addEventListener('click', function(e){ if(e.target === kpiOverlay) closeKpiModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && kpiOverlay.classList.contains('open')) closeKpiModal(); });
+
+  function kpiRowHtml(v){
+    var typeBadge = v.type === 'KPI' ? '<span class="badge b-accent">KPI</span>' : '<span class="badge b-red">KRI</span>';
+    var statusBadge = v.status === 'Active' ? '<span class="badge b-green">Active</span>' : v.status === 'Retired' ? '<span class="badge b-gray">Retired</span>' : '<span class="badge b-gray">Draft</span>';
+    return '<td>' + v.name + '</td>' +
+      '<td>' + typeBadge + '</td>' +
+      '<td>' + v.linked + '</td>' +
+      '<td>' + v.source + '</td>' +
+      '<td>' + v.red + ' / ' + v.amber + ' / ' + v.green + '</td>' +
+      '<td>' + v.freq + '</td>' +
+      '<td>' + v.owner + '</td>' +
+      '<td>' + statusBadge + '</td>' +
+      '<td><button class="btn btn-ghost kpi-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>';
+  }
+
+  document.getElementById('kpiSave').addEventListener('click', function(){
+    var nameEl = document.getElementById('kpiName');
+    var name = nameEl.value.trim();
+    if(!name){
+      nameEl.style.borderColor = 'var(--red)';
+      nameEl.focus();
+      return;
+    }
+    nameEl.style.borderColor = '';
+    var v = {};
+    kpiFields.forEach(function(key){
+      var el = kpiFieldEl(key);
+      v[key] = el ? el.value.trim() : '';
+    });
+
+    if(kpiEditingRow){
+      kpiFields.forEach(function(key){ kpiEditingRow.setAttribute('data-' + key, v[key]); });
+      kpiEditingRow.innerHTML = kpiRowHtml(v);
+      kpiEditingRow.querySelector('.kpi-edit').addEventListener('click', function(e){
+        e.stopPropagation();
+        openKpiModal(kpiEditingRow);
+      });
+      showToast(v.name + ' updated');
+    } else {
+      var row = document.createElement('tr');
+      row.className = 'rowhover kpi-row';
+      kpiFields.forEach(function(key){ row.setAttribute('data-' + key, v[key]); });
+      row.innerHTML = kpiRowHtml(v);
+      row.querySelector('.kpi-edit').addEventListener('click', function(e){
+        e.stopPropagation();
+        openKpiModal(row);
+      });
+      document.getElementById('kpiTable').appendChild(row);
+      row.scrollIntoView({block:'nearest'});
+      showToast(v.name + ' added to the ' + v.type + ' library');
+    }
+    closeKpiModal();
+  });
+
+  document.getElementById('kpiDelete').addEventListener('click', function(){
+    if(kpiEditingRow){
+      var name = kpiEditingRow.getAttribute('data-name');
+      kpiEditingRow.remove();
+      showToast(name + ' removed from the library');
+    }
+    closeKpiModal();
+  });
+
+  // Control configuration (Risk assessment > Controls tab)
+  var controlOverlay = document.getElementById('controlOverlay');
+  var ctrlFields = ['name','objective','type','mode','freq','owner','linked','design','operating','evidence'];
+  var ctrlEditingRow = null;
+
+  function ctrlFieldEl(key){ return document.getElementById('ctrl' + key.charAt(0).toUpperCase() + key.slice(1)); }
+
+  function openControlModal(row){
+    ctrlEditingRow = row || null;
+    document.getElementById('controlModalTitle').textContent = row ? 'Edit control' : 'Add control';
+    document.getElementById('controlDelete').style.display = row ? 'inline-flex' : 'none';
+    ctrlFields.forEach(function(key){
+      var el = ctrlFieldEl(key);
+      if(!el) return;
+      var def = key === 'mode' ? 'Manual' : key === 'freq' ? 'Monthly' : (key === 'type' || key === 'design' || key === 'operating') ? 'Effective' : '';
+      if(key === 'type') def = 'Preventative';
+      el.value = row ? (row.getAttribute('data-' + key) || '') : def;
+    });
+    controlOverlay.classList.add('open');
+    document.getElementById('ctrlName').focus();
+  }
+  function closeControlModal(){
+    controlOverlay.classList.remove('open');
+    ctrlEditingRow = null;
+  }
+
+  document.getElementById('btnNewControl').addEventListener('click', function(){ openControlModal(null); });
+  document.querySelectorAll('.control-edit').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      openControlModal(btn.closest('.control-row'));
+    });
+  });
+  document.getElementById('controlClose').addEventListener('click', closeControlModal);
+  document.getElementById('controlCancel').addEventListener('click', closeControlModal);
+  controlOverlay.addEventListener('click', function(e){ if(e.target === controlOverlay) closeControlModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && controlOverlay.classList.contains('open')) closeControlModal(); });
+
+  function effBadge(val){
+    var cls = val === 'Effective' ? 'b-green' : val === 'Partial' ? 'b-amber' : 'b-red';
+    return '<span class="badge ' + cls + '">' + val + '</span>';
+  }
+  function ctrlRowHtml(v){
+    var evidence = v.evidence ? '<i class="fa-solid fa-paperclip"></i> ' + v.evidence : '—';
+    return '<td>' + v.name + '</td>' +
+      '<td>' + v.type + ' · ' + v.mode + '</td>' +
+      '<td>' + v.freq + '</td>' +
+      '<td>' + v.owner + '</td>' +
+      '<td>' + effBadge(v.design) + '</td>' +
+      '<td>' + effBadge(v.operating) + '</td>' +
+      '<td>' + evidence + '</td>' +
+      '<td><button class="btn btn-ghost control-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>';
+  }
+
+  document.getElementById('controlSave').addEventListener('click', function(){
+    var nameEl = document.getElementById('ctrlName');
+    var name = nameEl.value.trim();
+    if(!name){
+      nameEl.style.borderColor = 'var(--red)';
+      nameEl.focus();
+      return;
+    }
+    nameEl.style.borderColor = '';
+    var v = {};
+    ctrlFields.forEach(function(key){
+      var el = ctrlFieldEl(key);
+      v[key] = el ? el.value.trim() : '';
+    });
+
+    if(ctrlEditingRow){
+      ctrlFields.forEach(function(key){ ctrlEditingRow.setAttribute('data-' + key, v[key]); });
+      ctrlEditingRow.innerHTML = ctrlRowHtml(v);
+      ctrlEditingRow.querySelector('.control-edit').addEventListener('click', function(e){
+        e.stopPropagation();
+        openControlModal(ctrlEditingRow);
+      });
+      showToast(v.name + ' updated');
+    } else {
+      var row = document.createElement('tr');
+      row.className = 'rowhover control-row';
+      ctrlFields.forEach(function(key){ row.setAttribute('data-' + key, v[key]); });
+      row.innerHTML = ctrlRowHtml(v);
+      row.querySelector('.control-edit').addEventListener('click', function(e){
+        e.stopPropagation();
+        openControlModal(row);
+      });
+      document.getElementById('controlTable').appendChild(row);
+      row.scrollIntoView({block:'nearest'});
+      showToast(v.name + ' added to controls');
+    }
+    closeControlModal();
+  });
+
+  document.getElementById('controlDelete').addEventListener('click', function(){
+    if(ctrlEditingRow){
+      var name = ctrlEditingRow.getAttribute('data-name');
+      ctrlEditingRow.remove();
+      showToast(name + ' removed from controls');
+    }
+    closeControlModal();
+  });
+
+  // Persona switcher — the 13 roles from Section 4 of the requirements doc
+  var personas = [
+    { key:'admin', label:'BRM Administrator', initials:'BA', note:'Configuration access — taxonomy, methodology, libraries, roles', screens:['cockpit','register','detail','kri','actions','nbrm','process','assurance','ai','kpiconfig'], readOnly:false },
+    { key:'specialist', label:'BRM Risk Specialist', initials:'TM', note:'Review & oversight across assigned portfolios', screens:['cockpit','register','detail','kri','actions','nbrm','process','assurance','ai','kpiconfig'], readOnly:false },
+    { key:'riskowner', label:'Risk Owner', initials:'RO', note:'Edit access to assigned risks and related actions', screens:['cockpit','register','detail','actions'], readOnly:false },
+    { key:'riskchampion', label:'Risk Champion', initials:'RC', note:'Edit access to assigned risks and related actions', screens:['cockpit','register','detail','actions'], readOnly:false },
+    { key:'controlowner', label:'Control Owner', initials:'CO', note:'Edit access to assigned controls and control evidence', screens:['register','detail','assurance'], readOnly:false },
+    { key:'actionowner', label:'Action Owner', initials:'AO', note:'Edit access to assigned actions', screens:['actions','detail'], readOnly:false },
+    { key:'kriowner', label:'KRI Owner', initials:'KO', note:'Edit access to assigned KRIs', screens:['kri','detail','kpiconfig'], readOnly:false },
+    { key:'processowner', label:'Process Owner', initials:'PO', note:'Edit access to assigned process records and process risks', screens:['process','register','actions'], readOnly:false },
+    { key:'nbrminitiator', label:'NBRM Initiator', initials:'NI', note:'Create and edit draft NBRM assessments', screens:['cockpit','nbrm'], readOnly:false },
+    { key:'nbrmreviewer', label:'NBRM Reviewer / SME', initials:'NR', note:'Review and comment access for assigned assessments', screens:['cockpit','nbrm'], readOnly:true },
+    { key:'assuranceprovider', label:'Assurance Provider', initials:'AP', note:'Controlled access to assurance plans, findings and evidence', screens:['assurance','register'], readOnly:false },
+    { key:'exec', label:'Executives / Committees', initials:'EX', note:'Read-only executive reporting and dashboard access', screens:['cockpit','register','kri','actions','assurance'], readOnly:true },
+    { key:'sysadmin', label:'System Administrator', initials:'SA', note:'Technical administration access', screens:['cockpit','kpiconfig'], readOnly:false }
+  ];
+  var currentPersonaKey = 'specialist';
+
+  function renderPersonaList(){
+    var list = document.getElementById('personaList');
+    list.innerHTML = personas.map(function(p){
+      var cur = p.key === currentPersonaKey;
+      var tag = p.readOnly ? '<span class="ptag b-amber" style="background:var(--amber-bg);color:var(--amber-text);">Read-only</span>' : '<span class="ptag b-green" style="background:var(--green-bg);color:var(--green-text);">Edit access</span>';
+      return '<div class="persona-row' + (cur ? ' current' : '') + '" data-persona="' + p.key + '">' +
+        '<div class="pav">' + p.initials + '</div>' +
+        '<div class="pinfo"><div class="pname">' + p.label + (cur ? ' (current)' : '') + '</div><div class="pnote">' + p.note + '</div></div>' +
+        tag +
+        '</div>';
+    }).join('');
+    list.querySelectorAll('.persona-row').forEach(function(row){
+      row.addEventListener('click', function(){ applyPersona(row.getAttribute('data-persona')); closePersonaModal(); });
+    });
+  }
+
+  function applyPersona(key){
+    var p = personas.filter(function(x){ return x.key === key; })[0];
+    if(!p) return;
+    currentPersonaKey = key;
+    document.getElementById('personaAvatar').textContent = p.initials;
+    document.getElementById('personaName').textContent = p.label;
+    document.getElementById('personaNote').textContent = p.note;
+    document.body.classList.toggle('read-only', p.readOnly);
+
+    document.querySelectorAll('.navitem[data-screen]').forEach(function(item){
+      var key2 = item.getAttribute('data-screen');
+      item.style.display = p.screens.indexOf(key2) > -1 ? '' : 'none';
+    });
+    document.querySelectorAll('.navgroup').forEach(function(group){
+      var items = group.querySelectorAll('.navitem[data-screen]');
+      var anyVisible = false;
+      items.forEach(function(it){ if(it.style.display !== 'none') anyVisible = true; });
+      group.classList.toggle('hidden-group', !anyVisible);
+    });
+
+    var activeScreen = document.querySelector('.screen.active');
+    var activeKey = activeScreen ? activeScreen.id.replace('screen-', '') : null;
+    if(!activeKey || p.screens.indexOf(activeKey) === -1){
+      switchScreen(p.screens[0]);
+    }
+    showToast('Switched to ' + p.label + (p.readOnly ? ' — spec defines read-only access; all actions stay clickable in this preview' : ''));
+  }
+
+  var personaOverlay = document.getElementById('personaOverlay');
+  function openPersonaModal(){ renderPersonaList(); personaOverlay.classList.add('open'); }
+  function closePersonaModal(){ personaOverlay.classList.remove('open'); }
+  document.getElementById('personaTrigger').addEventListener('click', openPersonaModal);
+  document.getElementById('personaClose').addEventListener('click', closePersonaModal);
+  personaOverlay.addEventListener('click', function(e){ if(e.target === personaOverlay) closePersonaModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && personaOverlay.classList.contains('open')) closePersonaModal(); });
+</script>
+</body>
+</html>
