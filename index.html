@@ -8,14 +8,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --navy:#101B2D; --navy2:#16233A; --navy3:#1E2E4A;
-    --accent:#2B6CB0; --accent-light:#EAF1FA;
-    --bg:#F3F5F8; --card:#FFFFFF; --border:#E3E6EC;
-    --text:#1A2233; --text2:#5B6478; --text3:#8A93A6;
-    --red:#C0392B; --red-bg:#FCEBE9; --red-text:#8E2A1F;
-    --amber:#B7791F; --amber-bg:#FCF3DE; --amber-text:#7A5209;
-    --green:#2F8452; --green-bg:#E6F4EB; --green-text:#1E5C38;
-    --radius:10px;
+    /* Vodacom brand */
+    --vf-red:#E60000; --vf-red-dark:#C10000;
+    --navy:#1A1A1A; --navy2:#242424; --navy3:#333333;
+    --accent:#E60000; --accent-light:#FDEBEB;
+    --bg:#F4F4F4; --card:#FFFFFF; --border:#E0E0E0;
+    --text:#1D1D1D; --text2:#5C5C5C; --text3:#8C8C8C;
+    /* RAG severity — deliberately kept distinct from brand red so data colour still reads as data */
+    --red:#A8000B; --red-bg:#FBE9EA; --red-text:#7A0008;
+    --amber:#C77700; --amber-bg:#FDF2E2; --amber-text:#8A5300;
+    --green:#007C42; --green-bg:#E4F3EA; --green-text:#005C31;
+    --slate:#EEF1F5; --slate-text:#44546A;
+    --radius:6px;
   }
   *{box-sizing:border-box;}
   body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;}
@@ -23,19 +27,20 @@
   /* Sidebar */
   .sidebar{width:236px;background:var(--navy);color:#C8D2E3;display:flex;flex-direction:column;flex-shrink:0;}
   .sidebar .logo{display:flex;align-items:center;gap:10px;padding:20px 18px;border-bottom:1px solid rgba(255,255,255,.08);}
-  .sidebar .logo .mark{width:30px;height:30px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;}
+  .sidebar .logo .mark{width:34px;height:34px;border-radius:50%;background:var(--vf-red);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .sidebar .logo .mark svg{width:15px;height:15px;}
   .sidebar .logo .name{font-weight:600;color:#fff;font-size:14px;line-height:1.2;}
-  .sidebar .logo .sub{font-size:11px;color:#8494B0;}
+  .sidebar .logo .sub{font-size:11px;color:#8C8C8C;}
   .navgroup{padding:14px 10px;}
-  .navgroup .label{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:#5E6E8C;padding:8px 10px 4px;}
-  .navitem{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;font-size:13px;color:#B7C2D6;margin-bottom:1px;}
-  .navitem i{width:16px;text-align:center;font-size:13px;color:#8494B0;}
-  .navitem:hover{background:rgba(255,255,255,.06);color:#fff;}
-  .navitem.active{background:var(--navy3);color:#fff;}
-  .navitem.active i{color:var(--accent-light);}
+  .navgroup .label{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:#6E6E6E;padding:8px 10px 4px;}
+  .navitem{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--radius);cursor:pointer;font-size:13px;color:#BDBDBD;margin-bottom:1px;border-left:3px solid transparent;}
+  .navitem i{width:16px;text-align:center;font-size:13px;color:#8C8C8C;}
+  .navitem:hover{background:rgba(255,255,255,.07);color:#fff;}
+  .navitem.active{background:var(--navy3);color:#fff;border-left-color:var(--vf-red);border-radius:0 var(--radius) var(--radius) 0;}
+  .navitem.active i{color:var(--vf-red);}
   .sidebar-foot{margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px;}
   .sidebar-foot:hover{background:rgba(255,255,255,.05);}
-  .sidebar-foot .switchicon{margin-left:auto;color:#7887A3;font-size:12px;}
+  .sidebar-foot .switchicon{margin-left:auto;color:#8C8C8C;font-size:12px;}
   .navgroup.hidden-group{display:none;}
   .persona-row{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:9px;cursor:pointer;border:1px solid transparent;}
   .persona-row:hover{background:var(--bg);}
@@ -47,9 +52,25 @@
   .persona-row .ptag{font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:20px;}
   .readonly-badge{display:none;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--amber-text);background:var(--amber-bg);padding:5px 10px;border-radius:20px;margin-right:6px;}
   body.read-only .readonly-badge{display:inline-flex;}
-  .avatar{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;}
-  .sidebar-foot .who{font-size:12px;color:#B7C2D6;line-height:1.3;}
-  .sidebar-foot .who .role{font-size:10.5px;color:#7887A3;}
+  .calcrow{display:flex;align-items:center;justify-content:space-between;background:var(--bg);border-radius:8px;padding:9px 13px;font-size:12.5px;color:var(--text2);font-weight:500;}
+  .calcval{font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;}
+  .calc-chip{padding:2px 10px;border-radius:20px;font-size:11.5px;font-weight:600;}
+  .calc-warn{display:none;align-items:center;gap:7px;font-size:11.5px;font-weight:500;color:var(--red-text);background:var(--red-bg);border-radius:8px;padding:8px 12px;margin-top:7px;}
+  .calc-warn.show{display:flex;}
+  .pick-row{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:9px;cursor:pointer;border:1px solid var(--border);margin-bottom:7px;}
+  .pick-row:hover{border-color:var(--accent);background:var(--accent-light);}
+  .pick-row.linked{opacity:.5;cursor:not-allowed;background:var(--bg);}
+  .pick-row.linked:hover{border-color:var(--border);background:var(--bg);}
+  .pick-row .pk-main{flex:1;min-width:0;}
+  .pick-row .pk-name{font-size:12.5px;font-weight:600;color:var(--text);}
+  .pick-row .pk-meta{font-size:11px;color:var(--text3);margin-top:2px;}
+  .picker-search{margin-bottom:12px;}
+  .linkbar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px;}
+  .unlink-btn{color:var(--text3);}
+  .unlink-btn:hover{color:var(--red-text);border-color:var(--red);}
+  .avatar{width:28px;height:28px;border-radius:50%;background:var(--vf-red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;}
+  .sidebar-foot .who{font-size:12px;color:#BDBDBD;line-height:1.3;}
+  .sidebar-foot .who .role{font-size:10.5px;color:#8C8C8C;}
   /* Main */
   .main{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--bg);}
   .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:var(--card);border-bottom:1px solid var(--border);}
@@ -82,7 +103,7 @@
   .b-amber{background:var(--amber-bg);color:var(--amber-text);}
   .b-green{background:var(--green-bg);color:var(--green-text);}
   .b-gray{background:#EEF0F4;color:var(--text2);}
-  .b-accent{background:var(--accent-light);color:#1B4F8C;}
+  .b-accent{background:var(--slate);color:var(--slate-text);}
   .dotstat{width:8px;height:8px;border-radius:50%;display:inline-block;}
   /* Heatmap */
   .heatmap{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
@@ -98,13 +119,16 @@
   .filterbar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
   .chip{border:1px solid var(--border);background:var(--card);border-radius:8px;padding:7px 12px;font-size:12px;color:var(--text2);display:flex;align-items:center;gap:6px;}
   .chip i{font-size:10px;}
-  .btn{border:1px solid var(--border);background:var(--card);border-radius:8px;padding:8px 14px;font-size:12.5px;font-weight:500;color:var(--text);cursor:pointer;}
-  .btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;}
-  .btn-ghost{border-color:transparent;color:var(--accent);}
+  .btn{border:1px solid #BDBDBD;background:var(--card);border-radius:var(--radius);padding:8px 15px;font-size:12.5px;font-weight:500;color:var(--text);cursor:pointer;}
+  .btn:hover{border-color:var(--text2);}
+  .btn-primary{background:var(--vf-red);border-color:var(--vf-red);color:#fff;font-weight:600;}
+  .btn-primary:hover{background:var(--vf-red-dark);border-color:var(--vf-red-dark);}
+  .btn-ghost{border-color:transparent;color:var(--text2);}
+  .btn-ghost:hover{border-color:transparent;background:var(--bg);color:var(--vf-red);}
   /* Tabs */
   .tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:18px;}
   .tab{padding:9px 4px;margin-right:22px;font-size:13px;color:var(--text3);border-bottom:2px solid transparent;cursor:pointer;}
-  .tab.active{color:var(--text);border-color:var(--accent);font-weight:600;}
+  .tab.active{color:var(--text);border-color:var(--vf-red);font-weight:600;}
   .tabpane{display:none;}
   .tabpane.active{display:block;}
   /* Form */
@@ -117,7 +141,7 @@
   .step{display:flex;align-items:center;gap:8px;color:var(--text3);font-size:12.5px;}
   .step .n{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;}
   .step.done .n{background:var(--green);border-color:var(--green);color:#fff;}
-  .step.current .n{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .step.current .n{background:var(--vf-red);border-color:var(--vf-red);color:#fff;}
   .step.current{color:var(--text);font-weight:600;}
   .step-sep{flex:1;height:1px;background:var(--border);margin:0 10px;}
   /* Sliders (rating) */
@@ -164,7 +188,7 @@
   [data-toast]:hover,[data-goto]:hover{opacity:.85;}
   .hcell:hover{outline:2px solid rgba(255,255,255,.6);outline-offset:-2px;}
   .kcard:hover{border-color:var(--border-strong,#C7CCD6);box-shadow:0 1px 4px rgba(0,0,0,.06);}
-  .chip.chip-on{background:var(--accent-light);border-color:var(--accent);color:#1B4F8C;font-weight:600;}
+  .chip.chip-on{background:var(--accent-light);border-color:var(--accent);color:var(--vf-red);font-weight:600;}
   .iconbtn:hover,.avatar:hover{background:var(--bg);}
   .steps .step{cursor:pointer;}
 </style>
@@ -175,8 +199,8 @@
 <div class="app">
   <aside class="sidebar">
     <div class="logo">
-      <div class="mark">BR</div>
-      <div><div class="name">BRM Platform</div><div class="sub">Vodacom Business Risk</div></div>
+      <div class="mark"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M14.8 1.4c-5.9.6-10.9 5.3-10.9 11 0 4.9 3.6 8.6 8.2 8.6 5.4 0 9.4-4.2 9.4-9.3 0-3-1.3-5.3-2.9-6.6.4 1 .5 1.9.5 2.6 0 3.6-2.8 6.6-6.3 6.6-1.9 0-3.2-1.2-3.2-3 0-2.9 2.4-6.3 5.7-7.3l-.5-2.6z" fill="#fff"/></svg></div>
+      <div><div class="name">Business Risk</div><div class="sub">Vodacom BRM Platform</div></div>
     </div>
     <div class="navgroup">
       <div class="label">Intelligence</div>
@@ -240,16 +264,16 @@
           <div class="panel">
             <div class="phead"><h3>Principal risk heatmap</h3><span class="more" data-goto="register">Open line of sight →</span></div>
             <div class="heatmap">
-              <div class="hcell" style="background:#C0392B" data-goto="register" data-toast="Filtering register by Network Resilience"><span>Network Resilience</span><span class="n">16</span></div>
-              <div class="hcell" style="background:#C0392B" data-goto="register" data-toast="Filtering register by Regulatory (POPIA)"><span>Regulatory (POPIA)</span><span class="n">15</span></div>
-              <div class="hcell" style="background:#B7791F" data-goto="register" data-toast="Filtering register by Third-Party Concentration"><span>Third-Party Concentration</span><span class="n">12</span></div>
-              <div class="hcell" style="background:#B7791F" data-goto="register" data-toast="Filtering register by Cyber &amp; Data Security"><span>Cyber &amp; Data Security</span><span class="n">11</span></div>
-              <div class="hcell" style="background:#2F8452" data-goto="register" data-toast="Filtering register by Customer Experience"><span>Customer Experience</span><span class="n">6</span></div>
-              <div class="hcell" style="background:#B7791F" data-goto="register" data-toast="Filtering register by Financial Crime"><span>Financial Crime</span><span class="n">10</span></div>
-              <div class="hcell" style="background:#2F8452" data-goto="register" data-toast="Filtering register by People &amp; Culture"><span>People &amp; Culture</span><span class="n">5</span></div>
-              <div class="hcell" style="background:#2F8452" data-goto="register" data-toast="Filtering register by Market &amp; FX"><span>Market &amp; FX</span><span class="n">7</span></div>
-              <div class="hcell" style="background:#C0392B" data-goto="register" data-toast="Filtering register by Technology Change"><span>Technology Change</span><span class="n">14</span></div>
-              <div class="hcell" style="background:#2F8452" data-goto="register" data-toast="Filtering register by Supply Chain"><span>Supply Chain</span><span class="n">6</span></div>
+              <div class="hcell" style="background:#A8000B" data-goto="register" data-toast="Filtering register by Network Resilience"><span>Network Resilience</span><span class="n">16</span></div>
+              <div class="hcell" style="background:#A8000B" data-goto="register" data-toast="Filtering register by Regulatory (POPIA)"><span>Regulatory (POPIA)</span><span class="n">15</span></div>
+              <div class="hcell" style="background:#A8000B" data-goto="register" data-toast="Filtering register by Technology Change"><span>Technology Change</span><span class="n">12</span></div>
+              <div class="hcell" style="background:#C77700" data-goto="register" data-toast="Filtering register by Third-Party Concentration"><span>Third-Party Concentration</span><span class="n">10</span></div>
+              <div class="hcell" style="background:#C77700" data-goto="register" data-toast="Filtering register by Cyber &amp; Data Security"><span>Cyber &amp; Data Security</span><span class="n">9</span></div>
+              <div class="hcell" style="background:#C77700" data-goto="register" data-toast="Filtering register by Financial Crime"><span>Financial Crime</span><span class="n">8</span></div>
+              <div class="hcell" style="background:#007C42" data-goto="register" data-toast="Filtering register by Customer Experience"><span>Customer Experience</span><span class="n">6</span></div>
+              <div class="hcell" style="background:#007C42" data-goto="register" data-toast="Filtering register by Market &amp; FX"><span>Market &amp; FX</span><span class="n">6</span></div>
+              <div class="hcell" style="background:#007C42" data-goto="register" data-toast="Filtering register by People &amp; Culture"><span>People &amp; Culture</span><span class="n">5</span></div>
+              <div class="hcell" style="background:#007C42" data-goto="register" data-toast="Filtering register by Supply Chain"><span>Supply Chain</span><span class="n">4</span></div>
             </div>
           </div>
           <div class="panel">
@@ -314,7 +338,7 @@
       <!-- 3. RISK DETAIL / ASSESSMENT -->
       <section class="screen" id="screen-detail">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:2px;">
-          <h2 class="h" style="margin:0;" id="detailTitle">ORK-0098 — Network resilience: load-shedding exposure</h2>
+          <h2 class="h" style="margin:0;" id="detailTitle">ORK-0098 — Network resilience — load-shedding exposure</h2>
           <span class="badge b-red" id="detailBadge">Residual: Red</span>
         </div>
         <p class="sub" id="detailSub">Operational risk · Network Operations BU · Owner: K. Naidoo · Last updated 05 Aug 2026</p>
@@ -335,9 +359,9 @@
             <div>
               <div class="panel">
                 <div class="phead"><h3>Rating</h3></div>
-                <div class="ratingrow"><span class="rl">Inherent</span><div class="ratingscale"><div class="rseg fill3"></div><div class="rseg fill3"></div><div class="rseg fill3"></div><div class="rseg"></div><div class="rseg"></div></div><span class="rv">Red · 16</span></div>
-                <div class="ratingrow"><span class="rl">Residual</span><div class="ratingscale"><div class="rseg fill3"></div><div class="rseg fill3"></div><div class="rseg"></div><div class="rseg"></div><div class="rseg"></div></div><span class="rv">Red · 12</span></div>
-                <div class="ratingrow"><span class="rl">Target</span><div class="ratingscale"><div class="rseg fill2"></div><div class="rseg fill2"></div><div class="rseg"></div><div class="rseg"></div><div class="rseg"></div></div><span class="rv">Amber · 8</span></div>
+                <div class="ratingrow"><span class="rl">Inherent</span><div class="ratingscale" id="barInherent"><div class="rseg fill3"></div><div class="rseg fill3"></div><div class="rseg fill3"></div><div class="rseg"></div><div class="rseg"></div></div><span class="rv" id="valInherent">Red · 16</span></div>
+                <div class="ratingrow"><span class="rl">Residual</span><div class="ratingscale" id="barResidual"><div class="rseg fill3"></div><div class="rseg fill3"></div><div class="rseg"></div><div class="rseg"></div><div class="rseg"></div></div><span class="rv" id="valResidual">Red · 12</span></div>
+                <div class="ratingrow"><span class="rl">Target</span><div class="ratingscale" id="barTarget"><div class="rseg fill2"></div><div class="rseg fill2"></div><div class="rseg"></div><div class="rseg"></div><div class="rseg"></div></div><span class="rv" id="valTarget">Amber · 8</span></div>
               </div>
               <div class="panel">
                 <div class="phead"><h3>Drivers &amp; consequences</h3></div>
@@ -368,22 +392,35 @@
         <div class="tabpane" id="tab-assessment">
           <div class="grid2">
             <div class="panel">
-              <div class="phead"><h3>Scoring methodology</h3></div>
+              <div class="phead"><h3>Scoring methodology</h3><span style="font-size:11.5px;color:var(--text3);">likelihood × impact</span></div>
+
               <div class="field-row">
-                <div class="field"><label>Inherent likelihood</label><select><option>1 — Rare</option><option>2 — Unlikely</option><option>3 — Possible</option><option selected>4 — Likely</option><option>5 — Almost certain</option></select></div>
-                <div class="field"><label>Inherent impact</label><select><option>1 — Insignificant</option><option>2 — Minor</option><option>3 — Moderate</option><option selected>4 — Major</option><option>5 — Severe</option></select></div>
+                <div class="field"><label>Inherent likelihood</label><select id="asInhL" class="score-input"><option value="1">1 — Rare</option><option value="2">2 — Unlikely</option><option value="3">3 — Possible</option><option value="4" selected>4 — Likely</option><option value="5">5 — Almost certain</option></select></div>
+                <div class="field"><label>Inherent impact</label><select id="asInhI" class="score-input"><option value="1">1 — Insignificant</option><option value="2">2 — Minor</option><option value="3">3 — Moderate</option><option value="4" selected>4 — Major</option><option value="5">5 — Severe</option></select></div>
               </div>
-              <div class="field-row">
-                <div class="field"><label>Residual likelihood</label><select><option>1 — Rare</option><option>2 — Unlikely</option><option>3 — Possible</option><option selected>4 — Likely</option><option>5 — Almost certain</option></select></div>
-                <div class="field"><label>Residual impact</label><select><option>1 — Insignificant</option><option>2 — Minor</option><option selected>3 — Moderate</option><option>4 — Major</option><option>5 — Severe</option></select></div>
+              <div class="calcrow"><span>Inherent score</span><span id="calcInherent" class="calcval">—</span></div>
+
+              <div class="field-row" style="margin-top:16px;">
+                <div class="field"><label>Residual likelihood</label><select id="asResL" class="score-input"><option value="1">1 — Rare</option><option value="2">2 — Unlikely</option><option value="3">3 — Possible</option><option value="4" selected>4 — Likely</option><option value="5">5 — Almost certain</option></select></div>
+                <div class="field"><label>Residual impact</label><select id="asResI" class="score-input"><option value="1">1 — Insignificant</option><option value="2">2 — Minor</option><option value="3" selected>3 — Moderate</option><option value="4">4 — Major</option><option value="5">5 — Severe</option></select></div>
               </div>
-              <div class="field"><label>Speed of impact</label><select><option>Slow — &gt;6 months</option><option selected>Medium — 1–6 months</option><option>Fast — &lt;1 month</option></select></div>
-              <div class="field"><label>Rationale for current rating</label><textarea>Residual likelihood held at "Likely" following 3 consecutive KRI breaches on power autonomy; impact reduced from Severe to Moderate reflecting partial mitigation via site prioritisation protocol.</textarea></div>
-              <button class="btn btn-primary save-btn" data-toast="Assessment saved — rating history updated"><i class="fa-solid fa-check"></i> Save assessment</button>
+              <div class="calcrow"><span>Residual score</span><span id="calcResidual" class="calcval">—</span></div>
+              <div id="calcWarn" class="calc-warn"><i class="fa-solid fa-triangle-exclamation"></i> Residual cannot exceed inherent — controls can only reduce exposure, never increase it.</div>
+
+              <div class="field-row" style="margin-top:16px;">
+                <div class="field"><label>Target likelihood</label><select id="asTgtL" class="score-input"><option value="1">1 — Rare</option><option value="2">2 — Unlikely</option><option value="3">3 — Possible</option><option value="4" selected>4 — Likely</option><option value="5">5 — Almost certain</option></select></div>
+                <div class="field"><label>Target impact</label><select id="asTgtI" class="score-input"><option value="1">1 — Insignificant</option><option value="2" selected>2 — Minor</option><option value="3">3 — Moderate</option><option value="4">4 — Major</option><option value="5">5 — Severe</option></select></div>
+              </div>
+              <div class="calcrow"><span>Target score</span><span id="calcTarget" class="calcval">—</span></div>
+
+              <div class="field" style="margin-top:16px;"><label>Speed of impact <span style="font-weight:400;color:var(--text3);">(not multiplied — used for prioritisation)</span></label><select><option>Slow — &gt;6 months</option><option selected>Medium — 1–6 months</option><option>Fast — &lt;1 month</option></select></div>
+              <div class="field"><label>Rationale for current rating</label><textarea id="asRationale">Residual likelihood held at "Likely" following 3 consecutive KRI breaches on power autonomy; impact reduced from Severe to Moderate reflecting partial mitigation via site prioritisation protocol.</textarea></div>
+              <button class="btn btn-primary save-btn" id="btnSaveAssessment"><i class="fa-solid fa-check"></i> Save assessment</button>
+              <p style="font-size:11px;color:var(--text3);margin:10px 0 0;">Bands in this prototype: 1–6 green · 8–10 amber · 12–25 red. Configurable per FR-MET-001.</p>
             </div>
             <div class="panel">
               <div class="phead"><h3>Rating history</h3></div>
-              <div style="font-size:12.5px;">
+              <div style="font-size:12.5px;" id="ratingHistory">
                 <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);"><span>05 Aug 2026</span><span class="badge b-red">Red · 12</span></div>
                 <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);"><span>02 Jul 2026</span><span class="badge b-amber">Amber · 9</span></div>
                 <div style="display:flex;justify-content:space-between;padding:7px 0;"><span>04 Jun 2026</span><span class="badge b-amber">Amber · 8</span></div>
@@ -394,28 +431,29 @@
 
         <!-- Controls -->
         <div class="tabpane" id="tab-controls">
-          <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
-            <button class="btn btn-primary" id="btnNewControl"><i class="fa-solid fa-plus"></i> Add control</button>
+          <div class="linkbar">
+            <button class="btn" id="btnLinkControl"><i class="fa-solid fa-link"></i> Link existing control</button>
+            <button class="btn btn-primary" id="btnNewControl"><i class="fa-solid fa-plus"></i> Add new control</button>
           </div>
           <div class="panel" style="padding:0;">
             <table id="controlTable">
               <tr><th>Control</th><th>Type</th><th>Frequency</th><th>Owner</th><th>Design</th><th>Operating</th><th>Evidence</th><th></th></tr>
 
-              <tr class="rowhover control-row" data-name="Diesel generator autonomy testing" data-objective="Ensure backup diesel generators can sustain priority sites through extended outages." data-type="Preventative" data-mode="Manual" data-freq="Monthly" data-owner="K. Naidoo" data-linked="ORK-0098 — Network resilience" data-design="Effective" data-operating="Effective" data-evidence="3 files">
+              <tr class="rowhover control-row" data-name="Diesel generator autonomy testing" data-objective="Ensure backup diesel generators can sustain priority sites through extended outages." data-type="Preventative" data-mode="Manual" data-freq="Monthly" data-owner="K. Naidoo" data-linked="ORK-0098 — Network resilience — load-shedding exposure" data-design="Effective" data-operating="Effective" data-evidence="3 files">
                 <td>Diesel generator autonomy testing</td><td>Preventative · Manual</td><td>Monthly</td><td>K. Naidoo</td><td><span class="badge b-green">Effective</span></td><td><span class="badge b-green">Effective</span></td><td><i class="fa-solid fa-paperclip"></i> 3 files</td>
-                <td><button class="btn btn-ghost control-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
+                <td style="white-space:nowrap;"><button class="btn btn-ghost control-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button><button class="btn btn-ghost unlink-btn control-unlink" style="padding:5px 9px;" title="Unlink from this risk"><i class="fa-solid fa-link-slash"></i></button></td>
               </tr>
-              <tr class="rowhover control-row" data-name="Battery backup capacity review" data-objective="Confirm battery backup capacity meets minimum autonomy standard at priority sites." data-type="Detective" data-mode="Manual" data-freq="Quarterly" data-owner="K. Naidoo" data-linked="ORK-0098 — Network resilience" data-design="Partial" data-operating="Partial" data-evidence="1 file">
+              <tr class="rowhover control-row" data-name="Battery backup capacity review" data-objective="Confirm battery backup capacity meets minimum autonomy standard at priority sites." data-type="Detective" data-mode="Manual" data-freq="Quarterly" data-owner="K. Naidoo" data-linked="ORK-0098 — Network resilience — load-shedding exposure" data-design="Partial" data-operating="Partial" data-evidence="1 file">
                 <td>Battery backup capacity review</td><td>Detective · Manual</td><td>Quarterly</td><td>K. Naidoo</td><td><span class="badge b-amber">Partial</span></td><td><span class="badge b-amber">Partial</span></td><td><i class="fa-solid fa-paperclip"></i> 1 file</td>
-                <td><button class="btn btn-ghost control-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
+                <td style="white-space:nowrap;"><button class="btn btn-ghost control-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button><button class="btn btn-ghost unlink-btn control-unlink" style="padding:5px 9px;" title="Unlink from this risk"><i class="fa-solid fa-link-slash"></i></button></td>
               </tr>
-              <tr class="rowhover control-row" data-name="Site prioritisation protocol" data-objective="Automatically prioritise power and maintenance resources to highest-criticality sites first." data-type="Preventative" data-mode="Automated" data-freq="Continuous" data-owner="Network Ops" data-linked="ORK-0098 — Network resilience" data-design="Effective" data-operating="Effective" data-evidence="2 files">
+              <tr class="rowhover control-row" data-name="Site prioritisation protocol" data-objective="Automatically prioritise power and maintenance resources to highest-criticality sites first." data-type="Preventative" data-mode="Automated" data-freq="Continuous" data-owner="Network Ops" data-linked="ORK-0098 — Network resilience — load-shedding exposure" data-design="Effective" data-operating="Effective" data-evidence="2 files">
                 <td>Site prioritisation protocol</td><td>Preventative · Automated</td><td>Continuous</td><td>Network Ops</td><td><span class="badge b-green">Effective</span></td><td><span class="badge b-green">Effective</span></td><td><i class="fa-solid fa-paperclip"></i> 2 files</td>
-                <td><button class="btn btn-ghost control-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
+                <td style="white-space:nowrap;"><button class="btn btn-ghost control-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button><button class="btn btn-ghost unlink-btn control-unlink" style="padding:5px 9px;" title="Unlink from this risk"><i class="fa-solid fa-link-slash"></i></button></td>
               </tr>
-              <tr class="rowhover control-row" data-name="Independent backup power SLA test" data-objective="Independently verify backup power SLA compliance is being met at audited sites." data-type="Detective" data-mode="Manual" data-freq="Annual" data-owner="Internal Audit" data-linked="ORK-0098 — Network resilience" data-design="Not tested" data-operating="Not tested" data-evidence="">
+              <tr class="rowhover control-row" data-name="Independent backup power SLA test" data-objective="Independently verify backup power SLA compliance is being met at audited sites." data-type="Detective" data-mode="Manual" data-freq="Annual" data-owner="Internal Audit" data-linked="ORK-0098 — Network resilience — load-shedding exposure" data-design="Not tested" data-operating="Not tested" data-evidence="">
                 <td>Independent backup power SLA test</td><td>Detective · Manual</td><td>Annual</td><td>Internal Audit</td><td><span class="badge b-red">Not tested</span></td><td><span class="badge b-red">Not tested</span></td><td>—</td>
-                <td><button class="btn btn-ghost control-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
+                <td style="white-space:nowrap;"><button class="btn btn-ghost control-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button><button class="btn btn-ghost unlink-btn control-unlink" style="padding:5px 9px;" title="Unlink from this risk"><i class="fa-solid fa-link-slash"></i></button></td>
               </tr>
             </table>
           </div>
@@ -423,12 +461,16 @@
 
         <!-- KRIs -->
         <div class="tabpane" id="tab-kris">
+          <div class="linkbar">
+            <button class="btn" id="btnLinkKri"><i class="fa-solid fa-link"></i> Link existing KRI</button>
+            <button class="btn btn-primary" id="btnNewKriFromRisk"><i class="fa-solid fa-plus"></i> Add new KRI</button>
+          </div>
           <div class="panel" style="padding:0;">
-            <table>
-              <tr><th>KRI</th><th>Current value</th><th>Threshold</th><th>Trend</th><th>RAG</th><th>Commentary</th></tr>
-              <tr class="rowhover" data-toast="Opening KRI: Sites below 4hr power autonomy"><td>Sites below 4hr power autonomy</td><td>62 sites</td><td>&lt; 20</td><td><i class="fa-solid fa-arrow-trend-up" style="color:var(--red-text)"></i></td><td><span class="rag" style="background:var(--red)"></span></td><td>3rd consecutive breach — escalated</td></tr>
-              <tr class="rowhover" data-toast="Opening KRI: Outage minutes / site / month"><td>Outage minutes / site / month</td><td>41 min</td><td>&lt; 30</td><td><i class="fa-solid fa-arrow-trend-up" style="color:var(--amber-text)"></i></td><td><span class="rag" style="background:var(--amber)"></span></td><td>Correlated with Stage 4+ schedules</td></tr>
-              <tr class="rowhover" data-toast="Opening KRI: Generator fuel SLA compliance"><td>Generator fuel SLA compliance</td><td>94%</td><td>&gt; 95%</td><td><i class="fa-solid fa-arrow-trend-down" style="color:var(--green-text)"></i></td><td><span class="rag" style="background:var(--green)"></span></td><td>Within tolerance</td></tr>
+            <table id="riskKriTable">
+              <tr><th>KRI</th><th>Current value</th><th>Threshold</th><th>Trend</th><th>RAG</th><th>Commentary</th><th></th></tr>
+              <tr class="rowhover risk-kri-row" data-kri="Sites below 4hr power autonomy"><td>Sites below 4hr power autonomy</td><td>62 sites</td><td>&lt; 20</td><td><i class="fa-solid fa-arrow-trend-up" style="color:var(--red-text)"></i></td><td><span class="rag" style="background:var(--red)"></span></td><td>3rd consecutive breach — escalated</td><td><button class="btn btn-ghost unlink-btn kri-unlink" style="padding:5px 9px;" title="Unlink from this risk"><i class="fa-solid fa-link-slash"></i></button></td></tr>
+              <tr class="rowhover risk-kri-row" data-kri="Outage minutes / site / month"><td>Outage minutes / site / month</td><td>41 min</td><td>&lt; 30</td><td><i class="fa-solid fa-arrow-trend-up" style="color:var(--amber-text)"></i></td><td><span class="rag" style="background:var(--amber)"></span></td><td>Correlated with Stage 4+ schedules</td><td><button class="btn btn-ghost unlink-btn kri-unlink" style="padding:5px 9px;" title="Unlink from this risk"><i class="fa-solid fa-link-slash"></i></button></td></tr>
+              <tr class="rowhover risk-kri-row" data-kri="Generator fuel SLA compliance"><td>Generator fuel SLA compliance</td><td>94%</td><td>&gt; 95%</td><td><i class="fa-solid fa-arrow-trend-down" style="color:var(--green-text)"></i></td><td><span class="rag" style="background:var(--green)"></span></td><td>Within tolerance</td><td><button class="btn btn-ghost unlink-btn kri-unlink" style="padding:5px 9px;" title="Unlink from this risk"><i class="fa-solid fa-link-slash"></i></button></td></tr>
             </table>
           </div>
         </div>
@@ -688,12 +730,12 @@
           <table id="kpiTable">
             <tr><th>Indicator</th><th>Type</th><th>Linked to</th><th>Source</th><th>Thresholds (R / A / G)</th><th>Frequency</th><th>Owner</th><th>Status</th><th></th></tr>
 
-            <tr class="rowhover kpi-row" data-name="Sites below 4hr power autonomy" data-type="KRI" data-def="Number of network sites where backup power autonomy falls below 4 hours." data-linked="ORK-0098 — Network resilience" data-source="Network monitoring system" data-owner="K. Naidoo" data-freq="Weekly" data-red="&gt; 40 sites" data-amber="20–40 sites" data-green="&lt; 20 sites" data-unit="Sites" data-status="Active">
+            <tr class="rowhover kpi-row" data-name="Sites below 4hr power autonomy" data-type="KRI" data-def="Number of network sites where backup power autonomy falls below 4 hours." data-linked="ORK-0098 — Network resilience — load-shedding exposure" data-source="Network monitoring system" data-owner="K. Naidoo" data-freq="Weekly" data-red="&gt; 40 sites" data-amber="20–40 sites" data-green="&lt; 20 sites" data-unit="Sites" data-status="Active">
               <td>Sites below 4hr power autonomy</td><td><span class="badge b-red">KRI</span></td><td>ORK-0098</td><td>Network monitoring system</td><td>&gt;40 / 20–40 / &lt;20</td><td>Weekly</td><td>K. Naidoo</td><td><span class="badge b-green">Active</span></td>
               <td><button class="btn btn-ghost kpi-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
             </tr>
 
-            <tr class="rowhover kpi-row" data-name="Data subject access requests overdue" data-type="KRI" data-def="Count of DSAR requests outstanding beyond the regulatory response window." data-linked="TRK-0031 — Regulatory (POPIA)" data-source="Case management system" data-owner="N. Dlamini" data-freq="Weekly" data-red="&gt; 10" data-amber="5–10" data-green="&lt; 5" data-unit="Count" data-status="Active">
+            <tr class="rowhover kpi-row" data-name="Data subject access requests overdue" data-type="KRI" data-def="Count of DSAR requests outstanding beyond the regulatory response window." data-linked="TRK-0031 — Regulatory non-compliance — POPIA data handling" data-source="Case management system" data-owner="N. Dlamini" data-freq="Weekly" data-red="&gt; 10" data-amber="5–10" data-green="&lt; 5" data-unit="Count" data-status="Active">
               <td>Data subject access requests overdue</td><td><span class="badge b-red">KRI</span></td><td>TRK-0031</td><td>Case management system</td><td>&gt;10 / 5–10 / &lt;5</td><td>Weekly</td><td>N. Dlamini</td><td><span class="badge b-green">Active</span></td>
               <td><button class="btn btn-ghost kpi-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
             </tr>
@@ -708,8 +750,18 @@
               <td><button class="btn btn-ghost kpi-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
             </tr>
 
-            <tr class="rowhover kpi-row" data-name="SIM swap fraud attempts / week" data-type="KRI" data-def="Weekly count of flagged SIM swap attempts matching known fraud patterns." data-linked="ORK-0156 — Financial crime" data-source="Fraud detection platform" data-owner="L. Botha" data-freq="Weekly" data-red="&gt; 60" data-amber="50–60" data-green="&lt; 50" data-unit="Count" data-status="Active">
+            <tr class="rowhover kpi-row" data-name="SIM swap fraud attempts / week" data-type="KRI" data-def="Weekly count of flagged SIM swap attempts matching known fraud patterns." data-linked="ORK-0156 — Financial crime — SIM swap fraud pattern" data-source="Fraud detection platform" data-owner="L. Botha" data-freq="Weekly" data-red="&gt; 60" data-amber="50–60" data-green="&lt; 50" data-unit="Count" data-status="Active">
               <td>SIM swap fraud attempts / week</td><td><span class="badge b-red">KRI</span></td><td>ORK-0156</td><td>Fraud detection platform</td><td>&gt;60 / 50–60 / &lt;50</td><td>Weekly</td><td>L. Botha</td><td><span class="badge b-green">Active</span></td>
+              <td><button class="btn btn-ghost kpi-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
+            </tr>
+
+            <tr class="rowhover kpi-row" data-name="Outage minutes / site / month" data-type="KRI" data-def="Average customer-affecting outage minutes per site per month." data-linked="ORK-0098 — Network resilience — load-shedding exposure" data-source="Network monitoring system" data-owner="K. Naidoo" data-freq="Monthly" data-red="&gt; 45 min" data-amber="30–45 min" data-green="&lt; 30 min" data-unit="Minutes" data-status="Active">
+              <td>Outage minutes / site / month</td><td><span class="badge b-red">KRI</span></td><td>ORK-0098</td><td>Network monitoring system</td><td>&gt;45 / 30–45 / &lt;30 min</td><td>Monthly</td><td>K. Naidoo</td><td><span class="badge b-green">Active</span></td>
+              <td><button class="btn btn-ghost kpi-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
+            </tr>
+
+            <tr class="rowhover kpi-row" data-name="Generator fuel SLA compliance" data-type="KPI" data-def="Percentage of generator refuelling events completed within the contracted SLA window." data-linked="ORK-0098 — Network resilience — load-shedding exposure" data-source="Supplier performance portal" data-owner="K. Naidoo" data-freq="Monthly" data-red="&lt; 90%" data-amber="90–95%" data-green="&gt; 95%" data-unit="Percent" data-status="Active">
+              <td>Generator fuel SLA compliance</td><td><span class="badge b-accent">KPI</span></td><td>ORK-0098</td><td>Supplier performance portal</td><td>&lt;90 / 90–95 / &gt;95%</td><td>Monthly</td><td>K. Naidoo</td><td><span class="badge b-green">Active</span></td>
               <td><button class="btn btn-ghost kpi-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>
             </tr>
 
@@ -780,7 +832,7 @@
       </div>
       <div class="field"><label>Definition</label><textarea id="kpiDef" placeholder="What this indicator measures, and why it matters…"></textarea></div>
       <div class="field-row">
-        <div class="field"><label>Linked risk or process</label><input id="kpiLinked" placeholder="e.g. ORK-0098 — Network resilience"></div>
+        <div class="field"><label>Linked risk or process</label><select id="kpiLinked"></select></div>
         <div class="field"><label>Data source</label><input id="kpiSource" placeholder="e.g. Network monitoring system"></div>
       </div>
       <div class="field-row">
@@ -809,6 +861,20 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="pickerOverlay">
+  <div class="modal" style="width:560px;">
+    <div class="modal-head">
+      <h3 id="pickerTitle">Link existing KRI</h3>
+      <div class="x" id="pickerClose" role="button" aria-label="Close"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:12px;color:var(--text3);margin:0 0 12px;" id="pickerHint">Select from the shared library. Items already linked to this risk are greyed out.</p>
+      <div class="field picker-search"><input id="pickerSearch" placeholder="Search the library…"></div>
+      <div id="pickerList"></div>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="controlOverlay">
   <div class="modal">
     <div class="modal-head">
@@ -832,7 +898,7 @@
         </div>
         <div class="field"><label>Owner</label><input id="ctrlOwner" placeholder="Search for owner…"></div>
       </div>
-      <div class="field"><label>Linked risk / process</label><input id="ctrlLinked" placeholder="e.g. ORK-0098 — Network resilience"></div>
+      <div class="field"><label>Linked risk / process</label><select id="ctrlLinked"></select></div>
       <div class="field-row">
         <div class="field"><label>Design effectiveness</label>
           <select id="ctrlDesign"><option>Effective</option><option>Partial</option><option>Not tested</option></select>
@@ -1133,6 +1199,7 @@
     kpiEditingRow = row || null;
     document.getElementById('kpiModalTitle').textContent = row ? 'Edit KPI / KRI' : 'Add KPI / KRI';
     document.getElementById('kpiDelete').style.display = row ? 'inline-flex' : 'none';
+    document.getElementById('kpiLinked').innerHTML = linkTargetOptions(row ? row.getAttribute('data-linked') : '');
     kpiFields.forEach(function(key){
       var el = kpiFieldEl(key);
       if(!el) return;
@@ -1220,6 +1287,234 @@
     closeKpiModal();
   });
 
+  // Risk scoring engine — likelihood x impact, banded to RAG
+  // Bands are a business decision (FR-MET-001 requires them configurable); these are prototype defaults.
+  var RAG_BANDS = [
+    { max: 6,  label: 'Green', cls: 'b-green', fill: 'fill1', colour: 'var(--green)' },
+    { max: 10, label: 'Amber', cls: 'b-amber', fill: 'fill2', colour: 'var(--amber)' },
+    { max: 25, label: 'Red',   cls: 'b-red',   fill: 'fill3', colour: 'var(--red)'   }
+  ];
+  function bandFor(score){
+    for(var i = 0; i < RAG_BANDS.length; i++){ if(score <= RAG_BANDS[i].max) return RAG_BANDS[i]; }
+    return RAG_BANDS[RAG_BANDS.length - 1];
+  }
+  function scoreOf(likelihoodEl, impactEl){
+    var l = parseInt(document.getElementById(likelihoodEl).value, 10);
+    var i = parseInt(document.getElementById(impactEl).value, 10);
+    return { l: l, i: i, score: l * i };
+  }
+  function renderCalc(targetId, calc){
+    var b = bandFor(calc.score);
+    document.getElementById(targetId).innerHTML =
+      '<span style="color:var(--text3);font-weight:400;">' + calc.l + ' × ' + calc.i + ' =</span> ' +
+      calc.score + ' <span class="calc-chip ' + b.cls + '">' + b.label + '</span>';
+    return b;
+  }
+  function recalcAssessment(){
+    var inh = scoreOf('asInhL', 'asInhI');
+    var res = scoreOf('asResL', 'asResI');
+    var tgt = scoreOf('asTgtL', 'asTgtI');
+    renderCalc('calcInherent', inh);
+    renderCalc('calcResidual', res);
+    renderCalc('calcTarget', tgt);
+    document.getElementById('calcWarn').classList.toggle('show', res.score > inh.score);
+    return { inh: inh, res: res, tgt: tgt };
+  }
+  function paintBar(barId, valId, score){
+    var b = bandFor(score);
+    var filled = Math.max(1, Math.min(5, Math.round(score / 5)));
+    var segs = '';
+    for(var i = 0; i < 5; i++){ segs += '<div class="rseg' + (i < filled ? ' ' + b.fill : '') + '"></div>'; }
+    document.getElementById(barId).innerHTML = segs;
+    document.getElementById(valId).textContent = b.label + ' · ' + score;
+  }
+  document.querySelectorAll('.score-input').forEach(function(sel){
+    sel.addEventListener('change', recalcAssessment);
+  });
+  recalcAssessment();
+
+  document.getElementById('btnSaveAssessment').addEventListener('click', function(){
+    var c = recalcAssessment();
+    if(c.res.score > c.inh.score){
+      showToast('Cannot save — residual score is higher than inherent');
+      return;
+    }
+    paintBar('barInherent', 'valInherent', c.inh.score);
+    paintBar('barResidual', 'valResidual', c.res.score);
+    paintBar('barTarget', 'valTarget', c.tgt.score);
+
+    var band = bandFor(c.res.score);
+    var badge = document.getElementById('detailBadge');
+    badge.textContent = 'Residual: ' + band.label;
+    badge.className = 'badge ' + band.cls;
+
+    var today = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+    var entry = document.createElement('div');
+    entry.style.cssText = 'display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);';
+    entry.innerHTML = '<span>' + today + '</span><span class="badge ' + band.cls + '">' + band.label + ' · ' + c.res.score + '</span>';
+    var hist = document.getElementById('ratingHistory');
+    hist.insertBefore(entry, hist.firstChild);
+
+    showToast('Assessment saved — residual ' + band.label + ' · ' + c.res.score + ', rating history updated');
+  });
+
+  // Shared link targets — risks and processes available to link against
+  var processOptions = [
+    'Process — Customer onboarding','Process — RICA / identity verification','Process — SIM activation',
+    'Process — Billing & collections','Process — Invoice generation','Process — Debt collection handover',
+    'Process — Network incident management','Process — P1 outage response','Combined assurance'
+  ];
+  function linkTargetOptions(selected){
+    var opts = ['<option value="">— not linked —</option>'];
+    Object.keys(riskDataMap).forEach(function(id){
+      var label = id + ' — ' + riskDataMap[id].title;
+      opts.push('<option value="' + label + '"' + (label === selected ? ' selected' : '') + '>' + label + '</option>');
+    });
+    processOptions.forEach(function(p){
+      opts.push('<option value="' + p + '"' + (p === selected ? ' selected' : '') + '>' + p + '</option>');
+    });
+    if(selected && opts.join('').indexOf('value="' + selected + '"') === -1){
+      opts.push('<option value="' + selected + '" selected>' + selected + '</option>');
+    }
+    return opts.join('');
+  }
+
+  // Generic library picker (used for both KRIs and controls)
+  var pickerOverlay = document.getElementById('pickerOverlay');
+  var pickerMode = null;
+
+  function openPicker(mode){
+    pickerMode = mode;
+    document.getElementById('pickerTitle').textContent = mode === 'kri' ? 'Link existing KRI' : 'Link existing control';
+    document.getElementById('pickerHint').textContent = mode === 'kri'
+      ? 'Select an indicator from the KPI / KRI library. Items already linked to this risk are greyed out.'
+      : 'Select a control from the control library. One control can serve multiple risks. Items already linked are greyed out.';
+    document.getElementById('pickerSearch').value = '';
+    renderPicker('');
+    pickerOverlay.classList.add('open');
+    document.getElementById('pickerSearch').focus();
+  }
+  function closePicker(){ pickerOverlay.classList.remove('open'); pickerMode = null; }
+
+  function libraryItems(mode){
+    var items = [];
+    if(mode === 'kri'){
+      document.querySelectorAll('#kpiTable .kpi-row').forEach(function(r){
+        items.push({
+          name: r.getAttribute('data-name'),
+          meta: r.getAttribute('data-type') + ' · ' + r.getAttribute('data-freq') + ' · ' + r.getAttribute('data-owner'),
+          red: r.getAttribute('data-red'), amber: r.getAttribute('data-amber'), green: r.getAttribute('data-green'),
+          unit: r.getAttribute('data-unit')
+        });
+      });
+    } else {
+      [
+        { name:'Automated document verification', meta:'Preventative · Automated · Continuous · N. Dlamini', type:'Preventative', mode2:'Automated', freq:'Continuous', owner:'N. Dlamini', design:'Effective', operating:'Effective', evidence:'2 files' },
+        { name:'Manual QA sampling — 5%', meta:'Detective · Manual · Monthly · N. Dlamini', type:'Detective', mode2:'Manual', freq:'Monthly', owner:'N. Dlamini', design:'Partial', operating:'Partial', evidence:'1 file' },
+        { name:'Dispute flag check before handover', meta:'Preventative · Manual · Weekly · Finance Ops', type:'Preventative', mode2:'Manual', freq:'Weekly', owner:'Finance Ops', design:'Partial', operating:'Partial', evidence:'' },
+        { name:'Automated retry logic', meta:'Corrective · Automated · Continuous · K. Naidoo', type:'Corrective', mode2:'Automated', freq:'Continuous', owner:'K. Naidoo', design:'Effective', operating:'Effective', evidence:'1 file' },
+        { name:'Automated rating engine reconciliation', meta:'Detective · Automated · Daily · Finance Ops', type:'Detective', mode2:'Automated', freq:'Daily', owner:'Finance Ops', design:'Effective', operating:'Effective', evidence:'3 files' },
+        { name:'Vendor concentration threshold review', meta:'Detective · Manual · Quarterly · S. van Wyk', type:'Detective', mode2:'Manual', freq:'Quarterly', owner:'S. van Wyk', design:'Effective', operating:'Partial', evidence:'1 file' }
+      ].forEach(function(c){ items.push(c); });
+    }
+    return items;
+  }
+
+  function alreadyLinked(mode, name){
+    var sel = mode === 'kri' ? '#riskKriTable .risk-kri-row' : '#controlTable .control-row';
+    var attr = mode === 'kri' ? 'data-kri' : 'data-name';
+    var found = false;
+    document.querySelectorAll(sel).forEach(function(r){
+      if(r.getAttribute(attr) === name) found = true;
+    });
+    return found;
+  }
+
+  function renderPicker(filter){
+    var list = document.getElementById('pickerList');
+    var items = libraryItems(pickerMode).filter(function(i){
+      return !filter || i.name.toLowerCase().indexOf(filter.toLowerCase()) > -1;
+    });
+    if(!items.length){
+      list.innerHTML = '<p style="font-size:12.5px;color:var(--text3);">Nothing in the library matches that search.</p>';
+      return;
+    }
+    list.innerHTML = items.map(function(i, idx){
+      var linked = alreadyLinked(pickerMode, i.name);
+      return '<div class="pick-row' + (linked ? ' linked' : '') + '" data-idx="' + idx + '">' +
+        '<i class="fa-solid ' + (pickerMode === 'kri' ? 'fa-chart-line' : 'fa-shield-halved') + '" style="color:var(--text3);"></i>' +
+        '<div class="pk-main"><div class="pk-name">' + i.name + '</div><div class="pk-meta">' + i.meta + '</div></div>' +
+        (linked ? '<span class="badge b-gray">Linked</span>' : '<span style="font-size:11.5px;color:var(--accent);font-weight:600;">Link</span>') +
+        '</div>';
+    }).join('');
+    list.querySelectorAll('.pick-row:not(.linked)').forEach(function(row){
+      row.addEventListener('click', function(){
+        linkItem(items[parseInt(row.getAttribute('data-idx'), 10)]);
+      });
+    });
+  }
+
+  function linkItem(item){
+    if(pickerMode === 'kri'){
+      var tr = document.createElement('tr');
+      tr.className = 'rowhover risk-kri-row';
+      tr.setAttribute('data-kri', item.name);
+      var thresholds = item.green || '—';
+      tr.innerHTML = '<td>' + item.name + '</td><td>— awaiting first reading</td><td>' + thresholds + '</td>' +
+        '<td><i class="fa-solid fa-minus" style="color:var(--text3)"></i></td>' +
+        '<td><span class="rag" style="background:#D9DCE3"></span></td>' +
+        '<td>Newly linked — no commentary yet</td>' +
+        '<td><button class="btn btn-ghost unlink-btn kri-unlink" style="padding:5px 9px;" title="Unlink from this risk"><i class="fa-solid fa-link-slash"></i></button></td>';
+      document.getElementById('riskKriTable').appendChild(tr);
+      wireUnlink(tr, 'kri');
+      showToast(item.name + ' linked to this risk');
+    } else {
+      var row = document.createElement('tr');
+      row.className = 'rowhover control-row';
+      var v = { name:item.name, objective:'', type:item.type, mode:item.mode2, freq:item.freq, owner:item.owner,
+                linked:document.getElementById('detailTitle').textContent, design:item.design, operating:item.operating, evidence:item.evidence };
+      ctrlFields.forEach(function(k){ row.setAttribute('data-' + k, v[k] || ''); });
+      row.innerHTML = ctrlRowHtml(v);
+      document.getElementById('controlTable').appendChild(row);
+      wireControlRow(row);
+      showToast(item.name + ' linked to this risk');
+    }
+    renderPicker(document.getElementById('pickerSearch').value);
+  }
+
+  function wireUnlink(row, mode){
+    var btn = row.querySelector(mode === 'kri' ? '.kri-unlink' : '.control-unlink');
+    if(!btn) return;
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var name = mode === 'kri' ? row.getAttribute('data-kri') : row.getAttribute('data-name');
+      row.remove();
+      showToast(name + ' unlinked — still available in the library');
+    });
+  }
+
+  // Re-attach both edit and unlink handlers after a control row is (re)rendered
+  function wireControlRow(row){
+    var edit = row.querySelector('.control-edit');
+    if(edit) edit.addEventListener('click', function(e){ e.stopPropagation(); openControlModal(row); });
+    wireUnlink(row, 'control');
+  }
+
+  document.getElementById('pickerClose').addEventListener('click', closePicker);
+  pickerOverlay.addEventListener('click', function(e){ if(e.target === pickerOverlay) closePicker(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && pickerOverlay.classList.contains('open')) closePicker(); });
+  document.getElementById('pickerSearch').addEventListener('input', function(){ renderPicker(this.value); });
+
+  document.getElementById('btnLinkKri').addEventListener('click', function(){ openPicker('kri'); });
+  document.getElementById('btnLinkControl').addEventListener('click', function(){ openPicker('control'); });
+  document.getElementById('btnNewKriFromRisk').addEventListener('click', function(){
+    switchScreen('kpiconfig');
+    setTimeout(function(){ document.getElementById('btnNewKpi').click(); }, 120);
+    showToast('Opening the KPI / KRI library to define a new indicator');
+  });
+  document.querySelectorAll('#riskKriTable .risk-kri-row').forEach(function(r){ wireUnlink(r, 'kri'); });
+  document.querySelectorAll('#controlTable .control-row').forEach(function(r){ wireUnlink(r, 'control'); });
+
   // Control configuration (Risk assessment > Controls tab)
   var controlOverlay = document.getElementById('controlOverlay');
   var ctrlFields = ['name','objective','type','mode','freq','owner','linked','design','operating','evidence'];
@@ -1231,11 +1526,13 @@
     ctrlEditingRow = row || null;
     document.getElementById('controlModalTitle').textContent = row ? 'Edit control' : 'Add control';
     document.getElementById('controlDelete').style.display = row ? 'inline-flex' : 'none';
+    document.getElementById('ctrlLinked').innerHTML = linkTargetOptions(row ? row.getAttribute('data-linked') : (document.getElementById('detailTitle') ? document.getElementById('detailTitle').textContent : ''));
     ctrlFields.forEach(function(key){
       var el = ctrlFieldEl(key);
       if(!el) return;
       var def = key === 'mode' ? 'Manual' : key === 'freq' ? 'Monthly' : (key === 'type' || key === 'design' || key === 'operating') ? 'Effective' : '';
       if(key === 'type') def = 'Preventative';
+      if(key === 'linked') def = document.getElementById('detailTitle').textContent;
       el.value = row ? (row.getAttribute('data-' + key) || '') : def;
     });
     controlOverlay.classList.add('open');
@@ -1271,7 +1568,8 @@
       '<td>' + effBadge(v.design) + '</td>' +
       '<td>' + effBadge(v.operating) + '</td>' +
       '<td>' + evidence + '</td>' +
-      '<td><button class="btn btn-ghost control-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button></td>';
+      '<td style="white-space:nowrap;"><button class="btn btn-ghost control-edit" style="padding:5px 9px;"><i class="fa-solid fa-pen"></i></button>' +
+      '<button class="btn btn-ghost unlink-btn control-unlink" style="padding:5px 9px;" title="Unlink from this risk"><i class="fa-solid fa-link-slash"></i></button></td>';
   }
 
   document.getElementById('controlSave').addEventListener('click', function(){
@@ -1290,23 +1588,18 @@
     });
 
     if(ctrlEditingRow){
-      ctrlFields.forEach(function(key){ ctrlEditingRow.setAttribute('data-' + key, v[key]); });
-      ctrlEditingRow.innerHTML = ctrlRowHtml(v);
-      ctrlEditingRow.querySelector('.control-edit').addEventListener('click', function(e){
-        e.stopPropagation();
-        openControlModal(ctrlEditingRow);
-      });
+      var edited = ctrlEditingRow;
+      ctrlFields.forEach(function(key){ edited.setAttribute('data-' + key, v[key]); });
+      edited.innerHTML = ctrlRowHtml(v);
+      wireControlRow(edited);
       showToast(v.name + ' updated');
     } else {
       var row = document.createElement('tr');
       row.className = 'rowhover control-row';
       ctrlFields.forEach(function(key){ row.setAttribute('data-' + key, v[key]); });
       row.innerHTML = ctrlRowHtml(v);
-      row.querySelector('.control-edit').addEventListener('click', function(e){
-        e.stopPropagation();
-        openControlModal(row);
-      });
       document.getElementById('controlTable').appendChild(row);
+      wireControlRow(row);
       row.scrollIntoView({block:'nearest'});
       showToast(v.name + ' added to controls');
     }
